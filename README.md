@@ -1,7 +1,7 @@
 ![Axidraw v3](http://v3ga.github.io/Images/Workshop_Bassens_axidraw/axidraw_v3_grid.JPG)
 
 # WORKSHOP “PROCESSING ET TRACEUR AXIDRAW”
-Du mardi 26 novembre au mercredi 27 novembre
+*Du mardi 26 novembre au mercredi 27 novembre à Stereolux*
 
 Au croisement du design graphique et de la programmation, ce workshop propose d’utiliser Processing pour créer, générer et imprimer des formes géométriques à l’aide d’un robot à dessin, le traceur Axidraw.
 
