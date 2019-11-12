@@ -16,35 +16,65 @@ class Grid
   // State flags
   boolean bComputeGridVec = true;
   boolean bDrawGrid = true;
+  boolean bSquare = false;
+  // Cells rendering
+  GridCellRender gridCellRender;
 
   // ----------------------------------------------------------
   Grid(int resx, int resy, float margin)
   {
     this.resx = resx;
     this.resy = resy;
-    this.w = width-2*margin;
-    this.h = height-2*margin;
-    this.x = margin;
-    this.y = margin;
+    this.margin = margin;
+    this.setSize(width-2*margin, height-2*margin);
+    this.setPosition(margin, margin);
 
-    computeGridVec();
+    // TEMP
+    this.gridCellRender = new GridCellRender(this);
+  }
+
+  // ----------------------------------------------------------
+  void setPosition(float x, float y)
+  {
+    this.x = x;
+    this.y = y;
+    this.bComputeGridVec = true;
+  }
+
+  // ----------------------------------------------------------
+  void setSize(float w, float h)
+  {
+    this.w = w;
+    this.h = h;
+    this.bComputeGridVec = true;
   }
 
   // ----------------------------------------------------------
   void setResx(int resx)
   {
     this.resx = resx;
-    this.bComputeGridVec = true;
+    this.adjustResolutionSquare();
   }
 
   // ----------------------------------------------------------
   void setResy(int resy)
   {
     this.resy = resy;
-    this.bComputeGridVec = true;
+    this.adjustResolutionSquare();
   }
 
-  
+  // ----------------------------------------------------------
+  void setSquare(boolean is)
+  {
+    this.bSquare = is;
+    this.adjustResolutionSquare();
+  }
+
+  // ----------------------------------------------------------
+  void setDrawGrid(boolean is)
+  {
+    this.bDrawGrid = is;
+  }
 
   // ----------------------------------------------------------
   void setRndDrawCell(float rnd_)
@@ -60,11 +90,24 @@ class Grid
     this.bComputeGridVec = true;
   }
 
+
   // ----------------------------------------------------------
-  void setDrawGrid(boolean is)
+  void adjustResolutionSquare()
   {
-    this.bDrawGrid = is;
+    if (bSquare == false)
+    {
+      this.setSize(width-2*margin, height-2*margin);
+      this.setPosition(margin, margin);
+    } else
+    {
+      this.resy = this.resx;
+
+      this.setSize(height-2*margin, height-2*margin);
+      this.setPosition((width-this.w)/2, (height-this.h)/2);
+    }
+    this.bComputeGridVec = true;
   }
+
 
   // ----------------------------------------------------------
   void computeGridVec()
@@ -77,15 +120,18 @@ class Grid
 
     float xx = this.x;
     float yy = this.y;
+    float wCell = this.w / float(resx);
+    float hCell = this.h / float(resy);
+
     for (int j=0; j<this.resy+1; j++)
     {
       xx = this.x;
       for (int i=0; i<this.resx+1; i++)
       {
         this.vertices[i + (this.resx+1)*j] = new Vec2D(xx + random(-rndDistort, rndDistort), yy + random(-rndDistort, rndDistort));
-        xx += this.w / float(resx);
+        xx += wCell;
       }
-      yy += this.h / float(resy);
+      yy += hCell;
     }
 
     int nbCells = getNbCells();
@@ -104,6 +150,25 @@ class Grid
     }    
 
     setRandomDrawCell(rndDrawCell);
+
+    computeCells();
+  }
+
+  // ----------------------------------------------------------
+  void computeCells()
+  {
+    if ( this.gridCellRender != null)
+    {
+      this.gridCellRender.beginCompute();
+
+      for (int j=0; j<this.resy; j++)
+      {
+        for (int i=0; i<this.resx; i++)
+        {
+          this.gridCellRender.compute( this.cells[i + this.resx*j ] );
+        }
+      }
+    }
   }
 
   // ----------------------------------------------------------
@@ -135,7 +200,6 @@ class Grid
     return this.resx*this.resy;
   }
 
-
   // ----------------------------------------------------------
   ArrayList<Line2D> getGridLines()
   {
@@ -163,12 +227,15 @@ class Grid
   {
     compute();
 
+    if (gridCellRender != null)
+      gridCellRender.draw();
+
     if (bDrawGrid)
     {
       pushStyle();
       stroke(0);
       strokeWeight(1);
-//      noFill();
+      noFill();
       Vec2D A, B, C, D;
       beginShape(QUADS);
       for (int j=0; j<this.resy; j++)
@@ -193,5 +260,4 @@ class Grid
       popStyle();
     }
   }
-
 }

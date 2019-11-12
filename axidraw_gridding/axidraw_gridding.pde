@@ -21,7 +21,7 @@ import toxi.geom.*;
 import toxi.math.*;
 
 // ------------------------------------------------------
-ControlFrame cf;
+Controls controls;
 
 // ------------------------------------------------------
 Grid grid;
@@ -66,6 +66,18 @@ void draw()
     endRecord();
     bExportSVG = false;
   }
+  controls.draw();
 }
 
 // ------------------------------------------------------
+void keyPressed()
+{
+  if (key == 'c')
+  {
+    controls.close();
+  } else if (key == 'o')
+  {
+    controls.open();
+  }
+
+}
