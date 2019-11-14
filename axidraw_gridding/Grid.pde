@@ -1,22 +1,27 @@
 class Grid
 {
   // Vertices
-  Vec2D[] vertices;
+  Vec2D[] vertices, verticesRect;
   // List of cells (quads)
   Polygon2D[] cells;
+  Rect[] rects;
   boolean[] bDrawCell;
   // nb of cells along each axis
   int resx, resy, nb;   
   // Dimensions
   float x, y, w, h;
   float margin;
+  float wCell, hCell;
   // Parameters
-  float rndDistort = 0.0;
   float rndDrawCell = 0.0;
   // State flags
   boolean bComputeGridVec = true;
   boolean bDrawGrid = true;
   boolean bSquare = false;
+  // Perturbation strategy
+  float perturbationAmount = 0.0;
+  String perturbation = "random";
+  float rndPerturbationMax = 40.0;
   // Cells rendering
   GridCellRender gridCellRender;
 
@@ -84,14 +89,6 @@ class Grid
   }
 
   // ----------------------------------------------------------
-  void setDistort(float rndDistort_)
-  {
-    this.rndDistort = rndDistort_;
-    this.bComputeGridVec = true;
-  }
-
-
-  // ----------------------------------------------------------
   void adjustResolutionSquare()
   {
     if (bSquare == false)
@@ -116,42 +113,82 @@ class Grid
     bComputeGridVec = false;
 
     int nbVertices = (this.resx+1)*(this.resy+1);
+    int nbCells = getNbCells();
+
     this.vertices = new Vec2D[nbVertices];
+    this.verticesRect = new Vec2D[nbVertices];
+    this.cells = new Polygon2D[nbCells];
+    this.rects = new Rect[nbCells];
+
+
+    this.wCell = this.w / float(resx);
+    this.hCell = this.h / float(resy);
 
     float xx = this.x;
     float yy = this.y;
-    float wCell = this.w / float(resx);
-    float hCell = this.h / float(resy);
-
+    int offset = 0;
     for (int j=0; j<this.resy+1; j++)
     {
       xx = this.x;
       for (int i=0; i<this.resx+1; i++)
       {
-        this.vertices[i + (this.resx+1)*j] = new Vec2D(xx + random(-rndDistort, rndDistort), yy + random(-rndDistort, rndDistort));
+        offset = i + (this.resx+1)*j;
+
+        Vec2D v = new Vec2D(xx, yy); 
+        this.verticesRect[offset] = v.copy();
+
+        v.addSelf( this.getPerturbation(perturbation) );
+        this.vertices[offset] = v;
+
         xx += wCell;
       }
       yy += hCell;
     }
 
-    int nbCells = getNbCells();
-    this.cells = new Polygon2D[nbCells];
+    yy = this.y;
     for (int j=0; j<this.resy; j++)
     {
+      xx = this.x;
       for (int i=0; i<this.resx; i++)
       {
+        offset = i + this.resx*j;
+
         Polygon2D p = new Polygon2D();
-        this.cells[i + this.resx*j ] = p;
         p.add( getVec2D(i, j) );
         p.add( getVec2D(i+1, j) );
         p.add( getVec2D(i+1, j+1) );
         p.add( getVec2D(i, j+1) );
+
+        this.cells[offset] = p;
+        this.rects[offset] = new Rect(xx, yy, wCell, hCell);
+
+        xx += wCell;
       }
+      yy += hCell;
     }    
 
     setRandomDrawCell(rndDrawCell);
 
     computeCells();
+  }
+
+  // ----------------------------------------------------------
+  void setPerturbationAmount(float value)
+  {
+    this.perturbationAmount = value;
+    this.bComputeGridVec = true;
+  }
+
+  // ----------------------------------------------------------
+  Vec2D getPerturbation(String perturbation)
+  {
+    Vec2D p = new Vec2D();
+    if (perturbation.equals("random"))
+    {
+      p.x = perturbationAmount * random(-rndPerturbationMax, rndPerturbationMax);
+      p.y = perturbationAmount * random(-rndPerturbationMax, rndPerturbationMax);
+    }
+    return p;
   }
 
   // ----------------------------------------------------------
@@ -161,11 +198,15 @@ class Grid
     {
       this.gridCellRender.beginCompute();
 
-      for (int j=0; j<this.resy; j++)
+      int i, j, offset;
+      for (j=0; j<this.resy; j++)
       {
-        for (int i=0; i<this.resx; i++)
+        for (i=0; i<this.resx; i++)
         {
-          this.gridCellRender.compute( this.cells[i + this.resx*j ] );
+          offset = i + this.resx*j;
+          println( bDrawCell[offset] );
+          if (bDrawCell[offset])
+            this.gridCellRender.compute( this.rects[offset], this.cells[offset] );
         }
       }
     }
@@ -178,6 +219,7 @@ class Grid
     bDrawCell = new boolean[nbCells];
     for (int i=0; i<nbCells; i++) 
       bDrawCell[i] = ( random(1) >= r ) ? true : false;
+    computeCells();
   }
 
   // ----------------------------------------------------------
@@ -233,7 +275,7 @@ class Grid
     if (bDrawGrid)
     {
       pushStyle();
-      stroke(0);
+      stroke(0, 100);
       strokeWeight(1);
       noFill();
       Vec2D A, B, C, D;
@@ -256,7 +298,18 @@ class Grid
           }
         }
       }
+
+
       endShape();
+
+      stroke(0, 20);
+      Rect r;
+      for (int i=0; i<this.rects.length; i++)
+      {
+        r = this.rects[i];
+        rect(r.x, r.y, r.width, r.height);
+      }
+
       popStyle();
     }
   }

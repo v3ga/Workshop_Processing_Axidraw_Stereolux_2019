@@ -1,12 +1,6 @@
 // ------------------------------------------------------
-
-
-
-// ------------------------------------------------------
 void setupControls()
 {
-  //  cf = new ControlFrame(this, 500, height, "Controls");
-  //  surface.setLocation(500, 10);
   controls = new Controls(this);
   controls.setup();
 }
@@ -35,6 +29,7 @@ class Controls
   Group gGrid;
   Slider sliderGridResx, sliderGridResy;
   Toggle tgDrawGrid, tgIsSquare;
+  Slider sliderPerturbationAmount, sliderRndCell;
   Button btnExportSVG;
 
   public Controls(PApplet _parent)
@@ -85,6 +80,10 @@ class Controls
     y+=(hControl+padding);
     tgDrawGrid = cp5.addToggle("drawGrid").setLabel("draw grid").setPosition(x, y).setSize(hControl, hControl).setValue(grid.bDrawGrid).setGroup(gGrid).addCallback(cbGrid);
     tgIsSquare = cp5.addToggle("isSquare").setLabel("is square").setPosition(x+3*hControl, y).setSize(hControl, hControl).setValue(grid.bSquare).setGroup(gGrid).addCallback(cbGrid);
+    y+=(hControl+padding+8);
+    sliderPerturbationAmount =  cp5.addSlider("perturbation").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.perturbationAmount).setGroup(gGrid).addCallback(cbGrid);
+    y+=(hControl+padding);
+    sliderRndCell =  cp5.addSlider("rndCell").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.rndDrawCell).setGroup(gGrid).addCallback(cbGrid);
 
     btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, 400 - hControl - padding).setGroup(gGrid);
 
@@ -120,19 +119,20 @@ class Controls
         { 
           grid.setResy( (int) value );
           updateControls();
-        } else if (name.equals("distort")) 
-          grid.setDistort( value );
-        else if (name.equals("drawGrid")) 
+        } else if (name.equals("drawGrid")) {
           grid.bDrawGrid = value > 0.0;
-        else if (name.equals("isSquare")) 
+        } else if (name.equals("isSquare")) 
         {
           boolean is = value > 0.0;
           grid.setSquare(is);
           if (is==false)
             grid.setResy( int(sliderGridResy.getValue()) );
           updateControls();
-        } else if (name.equals("rndCell")) 
+        } else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );
+        } else if (name.equals("perturbation")) {
+          grid.setPerturbationAmount( value );
+        }
         break;
       }
     }
