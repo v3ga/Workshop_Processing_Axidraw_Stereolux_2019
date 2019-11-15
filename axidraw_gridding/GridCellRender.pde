@@ -107,6 +107,10 @@ class GridCellRender
   }
 
   // ----------------------------------------------------------
+  void compute(Rect rect, Polygon2D quad)
+  {
+  }
+  // ----------------------------------------------------------
   String _id(String s)
   {
     return this.name+"_"+s;

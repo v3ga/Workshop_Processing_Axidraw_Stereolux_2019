@@ -36,7 +36,7 @@ class Grid
     this.setPosition(margin, margin);
 
     // TEMP
-    this.gridCellRender = new GridCellRender(this);
+    this.gridCellRender = new GridCellRenderEllipse("Ellipses",this);
   }
 
   // ----------------------------------------------------------
