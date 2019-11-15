@@ -23,6 +23,7 @@ class Grid
   String perturbation = "random";
   float rndPerturbationMax = 40.0;
   // Cells rendering
+  ArrayList<GridCellRender> listRenders = new ArrayList<GridCellRender>();
   GridCellRender gridCellRender;
 
   // ----------------------------------------------------------
@@ -36,6 +37,12 @@ class Grid
 
     // TEMP
     this.gridCellRender = new GridCellRender(this);
+  }
+
+  // ----------------------------------------------------------
+  void createControls()
+  {
+    this.gridCellRender.createControls();
   }
 
   // ----------------------------------------------------------
@@ -204,7 +211,6 @@ class Grid
         for (i=0; i<this.resx; i++)
         {
           offset = i + this.resx*j;
-          println( bDrawCell[offset] );
           if (bDrawCell[offset])
             this.gridCellRender.compute( this.rects[offset], this.cells[offset] );
         }

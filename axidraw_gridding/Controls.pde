@@ -3,6 +3,7 @@ void setupControls()
 {
   controls = new Controls(this);
   controls.setup();
+  grid.createControls();
 }
 
 
