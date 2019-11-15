@@ -20,26 +20,51 @@ import controlP5.*;
 import toxi.geom.*;
 import toxi.math.*;
 
+
 // ------------------------------------------------------
-Controls controls;
+// Window dimensions
+int windowWidth = 1400;
+int windowHeight = 1000;
+
+// Resolution max for grid (both x & y)
+int nbGridResMax = 20;
+int gridMargin = 40;
+
+// Export folder (relative to sketch)
+String strExportFolder = "data/exports/svg/";
 
 // ------------------------------------------------------
 Grid grid;
 
 // ------------------------------------------------------
-String strExportFolder = "data/exports/svg/";
+Rect rectColumnLeft, rectGrid, rectColumnRight;
+
+// ------------------------------------------------------
+Controls controls;
+
+// ------------------------------------------------------
 boolean bExportSVG = false;
 
 // ------------------------------------------------------
 void settings()
 {
-  size(297*4,210*4);
+  size(windowWidth,windowHeight);
+
+  float r = 0.25;
+  float wRectColumn = r*windowWidth;
+  rectColumnLeft = new Rect(0,0,wRectColumn,windowHeight);
+  rectColumnRight = new Rect(width-wRectColumn,0,wRectColumn,windowHeight);
+  float wRectGrid = width - (rectColumnLeft.width+rectColumnRight.width);
+  println(wRectGrid);
+  rectGrid = new Rect(wRectColumn,0,wRectGrid,windowHeight);
+  println(rectGrid);
+  
 }
 
 // ------------------------------------------------------
 void setupGrid()
 {
-  grid = new Grid(10,10,60);
+  grid = new Grid(10,10,rectGrid);
 }
 
 // ------------------------------------------------------
@@ -56,6 +81,7 @@ void setup()
 void draw()
 {
   background(255);
+  grid.compute();
   if (bExportSVG)
   {
       beginRecord(SVG, strExportFolder + Utils.timestamp() + "_grid.svg");
@@ -66,8 +92,23 @@ void draw()
     endRecord();
     bExportSVG = false;
   }
+  grid.drawField();
   controls.draw();
+  drawDebug();
 }
+
+// ------------------------------------------------------
+void drawDebug()
+{
+  pushStyle();
+  noFill();
+  stroke(200,0,0,50);
+  rect(rectColumnLeft.x,rectColumnLeft.y,rectColumnLeft.width,rectColumnLeft.height);
+  rect(rectColumnRight.x,rectColumnRight.y,rectColumnRight.width,rectColumnRight.height);
+  rect(rectGrid.x,rectGrid.y,rectGrid.width,rectGrid.height);
+  popStyle();
+}
+
 
 // ------------------------------------------------------
 void keyPressed()

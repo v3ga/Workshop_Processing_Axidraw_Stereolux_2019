@@ -1,5 +1,7 @@
 class Grid
 {
+  // Viewport
+  Rect rectViewport;
   // Vertices
   Vec2D[] vertices, verticesRect;
   // List of cells (quads)
@@ -10,7 +12,7 @@ class Grid
   int resx, resy, nb;   
   // Dimensions
   float x, y, w, h;
-  float margin;
+  float margin = gridMargin;
   float wCell, hCell;
   // Parameters
   float rndDrawCell = 0.0;
@@ -18,6 +20,7 @@ class Grid
   boolean bComputeGridVec = true;
   boolean bDrawGrid = true;
   boolean bSquare = false;
+  boolean bDrawField = false;
   // Perturbation strategy
   float perturbationAmount = 0.0;
   String perturbation = "random";
@@ -25,24 +28,30 @@ class Grid
   // Cells rendering
   ArrayList<GridCellRender> listRenders = new ArrayList<GridCellRender>();
   GridCellRender gridCellRender;
+  // Fields
+  ArrayList<GridField> listFields = new ArrayList<GridField>();
+  GridField gridField;
+
 
   // ----------------------------------------------------------
-  Grid(int resx, int resy, float margin)
+  Grid(int resx, int resy, Rect rectViewport)
   {
     this.resx = resx;
     this.resy = resy;
-    this.margin = margin;
-    this.setSize(width-2*margin, height-2*margin);
-    this.setPosition(margin, margin);
+    this.rectViewport = rectViewport;
+
+    this.adjustResolutionSquare();
 
     // TEMP
-    this.gridCellRender = new GridCellRenderEllipse("Ellipses",this);
+    this.gridCellRender = new GridCellRenderEllipse(this);
+    this.gridField = new GridFieldSine(this);
   }
 
   // ----------------------------------------------------------
   void createControls()
   {
     this.gridCellRender.createControls();
+    this.gridField.createControls();
   }
 
   // ----------------------------------------------------------
@@ -98,17 +107,38 @@ class Grid
   // ----------------------------------------------------------
   void adjustResolutionSquare()
   {
+    float wGrid=0, hGrid=0;
+    // ratio = w / h; w = ratio * h; h = w / ratio;
+    float ratio = rectViewport.width / rectViewport.height;
+
     if (bSquare == false)
     {
-      this.setSize(width-2*margin, height-2*margin);
-      this.setPosition(margin, margin);
+      // Paysage viewport
+      if (rectViewport.width >= rectViewport.height)
+      {
+        hGrid = rectViewport.height - 2*margin;
+        wGrid = hGrid * ratio;
+      } else 
+      {
+        wGrid = rectViewport.width - 2*margin;          
+        hGrid = wGrid / ratio;
+      }
     } else
     {
       this.resy = this.resx;
 
-      this.setSize(height-2*margin, height-2*margin);
-      this.setPosition((width-this.w)/2, (height-this.h)/2);
+      // Paysage viewport
+      if (rectViewport.width >= rectViewport.height)
+      {
+        wGrid = hGrid = rectViewport.height - 2*margin;
+      } else 
+      {
+        wGrid = hGrid = rectViewport.width - 2*margin;
+      }
     }
+
+    this.setSize(wGrid, hGrid);
+    this.setPosition(rectViewport.x + (rectViewport.width-wGrid)/2, rectViewport.y + (rectViewport.height-hGrid)/2);
     this.bComputeGridVec = true;
   }
 
@@ -238,7 +268,7 @@ class Grid
   Polygon2D getCell(int i, int j)
   {
     if (i < resx && j < resy && bDrawCell[i + resx*j])
-      return this.cells[i+(resx-1)*j];
+      return this.cells[i+(resx)*j];
     return null;
   }
 
@@ -273,7 +303,6 @@ class Grid
   // ----------------------------------------------------------
   void draw()
   {
-    compute();
 
     if (gridCellRender != null)
       gridCellRender.draw();
@@ -318,5 +347,35 @@ class Grid
 
       popStyle();
     }
+  }
+
+  // ----------------------------------------------------------
+  void drawField()
+  {
+    if (this.rects == null || !bDrawField) return;
+    pushStyle();
+    noStroke();
+    rectMode(CENTER);
+    float value = 0.0;
+    Rect rect;
+    Vec2D c;
+    float f = 1.0;
+    for (int j=0; j<this.resy; j++)
+    {
+      for (int i=0; i<this.resx; i++)
+      {
+        rect = this.rects[i+this.resx*j];
+        if (rect != null)
+        {
+          value = gridField.getValue(rect.x+0.5*rect.width, rect.y+0.5*rect.height);
+          fill(value*255, 100);
+          rect(rect.x+0.5*rect.width, rect.y+0.5*rect.height, f*rect.width, f*rect.height);
+//          fill(200,0,0,255);
+//          text(nf(value,1,2)+"",rect.x+0.5*rect.width,rect.y+0.5*rect.height);  
+      }
+
+      }
+    }
+    popStyle();
   }
 }

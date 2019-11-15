@@ -16,7 +16,6 @@ void updateControls()
 // ------------------------------------------------------
 void exportSVG()
 {
-  println("exportSVG");
   bExportSVG = true;
 }
 
@@ -48,15 +47,13 @@ class Controls
   // ------------------------------------------------------
   public void setup() 
   {
-    int wControl = 250;
+    int margin = 5;
+    int wControl = int(rectColumnLeft.width - 2*margin)-60;
     int hControl = 20;
     int padding = 10;
     int x = 5;
     int y = 10;
 
-    int nbGridMax = 10;
-
-    surface.setLocation(0, 10);
 
     //    cp5 = new ControlP5(this, new ControlFont(font15, 13));
     cp5 = new ControlP5(parent);
@@ -70,23 +67,24 @@ class Controls
      cp5.setColorBackground(color(#e1a48c));
      */
     // GRID
-    gGrid = cp5.addGroup("Grid").setBackgroundHeight(400).setWidth(330).setBackgroundColor(color(0, 190)).setPosition(5, 15);
+    gGrid = cp5.addGroup("Grid").setBackgroundHeight(400).setWidth(int(rectColumnLeft.width)).setBackgroundColor(color(0, 190)).setPosition(int(rectColumnLeft.x), 10);
 
     cp5.setBroadcast(false);
-    sliderGridResx = cp5.addSlider("resx").setPosition(x, y).setSize(wControl, hControl).setRange(1, nbGridMax).setNumberOfTickMarks(nbGridMax).setGroup(gGrid).addCallback(cbGrid);
+    sliderGridResx = cp5.addSlider("resx").setPosition(x, y).setSize(wControl, hControl).setRange(1, nbGridResMax).setNumberOfTickMarks(nbGridResMax).setGroup(gGrid).addCallback(cbGrid);
     sliderGridResx.setValue(grid.resx);
     y+=(hControl+padding);
-    sliderGridResy = cp5.addSlider("resy").setPosition(x, y).setSize(wControl, hControl).setRange(1, nbGridMax).setNumberOfTickMarks(nbGridMax).setGroup(gGrid).addCallback(cbGrid);
+    sliderGridResy = cp5.addSlider("resy").setPosition(x, y).setSize(wControl, hControl).setRange(1, nbGridResMax).setNumberOfTickMarks(nbGridResMax).setGroup(gGrid).addCallback(cbGrid);
     sliderGridResy.setValue(grid.resy);
     y+=(hControl+padding);
     tgDrawGrid = cp5.addToggle("drawGrid").setLabel("draw grid").setPosition(x, y).setSize(hControl, hControl).setValue(grid.bDrawGrid).setGroup(gGrid).addCallback(cbGrid);
     tgIsSquare = cp5.addToggle("isSquare").setLabel("is square").setPosition(x+3*hControl, y).setSize(hControl, hControl).setValue(grid.bSquare).setGroup(gGrid).addCallback(cbGrid);
+    tgIsSquare = cp5.addToggle("drawField").setLabel("draw field").setPosition(x+5*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawField).setGroup(gGrid).addCallback(cbGrid);
     y+=(hControl+padding+8);
     sliderPerturbationAmount =  cp5.addSlider("perturbation").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.perturbationAmount).setGroup(gGrid).addCallback(cbGrid);
     y+=(hControl+padding);
     sliderRndCell =  cp5.addSlider("rndCell").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.rndDrawCell).setGroup(gGrid).addCallback(cbGrid);
 
-    btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, 400 - hControl - padding).setGroup(gGrid);
+    btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, height - hControl - margin);
 
     cp5.setBroadcast(true);
   }
@@ -120,16 +118,22 @@ class Controls
         { 
           grid.setResy( (int) value );
           updateControls();
-        } else if (name.equals("drawGrid")) {
+        } 
+        else if (name.equals("drawGrid")) {
           grid.bDrawGrid = value > 0.0;
-        } else if (name.equals("isSquare")) 
+        }
+        else if (name.equals("isSquare")) 
         {
           boolean is = value > 0.0;
           grid.setSquare(is);
           if (is==false)
             grid.setResy( int(sliderGridResy.getValue()) );
           updateControls();
-        } else if (name.equals("rndCell")) { 
+        }
+        else if (name.equals("drawField")) {
+          grid.bDrawField = value > 0.0;
+        }
+        else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );
         } else if (name.equals("perturbation")) {
           grid.setPerturbationAmount( value );
