@@ -36,7 +36,7 @@ class GridField
 // ----------------------------------------------------------
 class GridFieldSine extends GridField implements CallbackListener
 {
-  int nbPeriod = 1;
+  float nbPeriod = 1;
   Slider sliderNbPeriod;
 
   // ----------------------------------------------------------
@@ -63,7 +63,7 @@ class GridFieldSine extends GridField implements CallbackListener
     y+=(hControl+padding);
 
     cp5.setBroadcast(true);
-  }
+}
 
   // ----------------------------------------------------------
   public void controlEvent(CallbackEvent theEvent) 
@@ -77,7 +77,7 @@ class GridFieldSine extends GridField implements CallbackListener
       //      println(name + "/"+value);
       if (name.equals( _id("nbPeriod") ) )
       {
-        this.nbPeriod = int(value);
+        this.nbPeriod = value;
         this.grid.bComputeGridVec = true;
       }
       break;

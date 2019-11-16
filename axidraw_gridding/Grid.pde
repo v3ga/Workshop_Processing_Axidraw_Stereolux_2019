@@ -21,6 +21,8 @@ class Grid
   boolean bDrawGrid = true;
   boolean bSquare = false;
   boolean bDrawField = false;
+  boolean bComputeStripes = true;
+  boolean bDrawPolygons = true;
   // Perturbation strategy
   float perturbationAmount = 0.0;
   String perturbation = "random";
@@ -31,7 +33,8 @@ class Grid
   // Fields
   ArrayList<GridField> listFields = new ArrayList<GridField>();
   GridField gridField;
-
+  // Stripes
+  Stripes stripes;
 
   // ----------------------------------------------------------
   Grid(int resx, int resy, Rect rectViewport)
@@ -45,6 +48,7 @@ class Grid
     // TEMP
     this.gridCellRender = new GridCellRenderEllipse(this);
     this.gridField = new GridFieldSine(this);
+    this.stripes = new Stripes();
   }
 
   // ----------------------------------------------------------
@@ -234,6 +238,8 @@ class Grid
     if ( this.gridCellRender != null)
     {
       this.gridCellRender.beginCompute();
+      if (bComputeStripes)
+        stripes.beginCompute();
 
       int i, j, offset;
       for (j=0; j<this.resy; j++)
@@ -242,8 +248,19 @@ class Grid
         {
           offset = i + this.resx*j;
           if (bDrawCell[offset])
+          {
             this.gridCellRender.compute( this.rects[offset], this.cells[offset] );
+          }
         }
+      }
+    }
+
+    if (bComputeStripes)
+    {
+      ArrayList<Polygon2D> polygons = this.gridCellRender.listPolygons;
+      for (Polygon2D p : polygons)
+      {
+        stripes.computeWithDistance(p, 6, 0, 0, 3);
       }
     }
   }
@@ -303,10 +320,6 @@ class Grid
   // ----------------------------------------------------------
   void draw()
   {
-
-    if (gridCellRender != null)
-      gridCellRender.draw();
-
     if (bDrawGrid)
     {
       pushStyle();
@@ -347,6 +360,16 @@ class Grid
 
       popStyle();
     }
+
+
+    if (bDrawPolygons && gridCellRender != null)
+      gridCellRender.draw();
+ 
+   if (bComputeStripes)
+   {
+     stripes.draw();
+   }
+
   }
 
   // ----------------------------------------------------------
@@ -370,10 +393,7 @@ class Grid
           value = gridField.getValue(rect.x+0.5*rect.width, rect.y+0.5*rect.height);
           fill(value*255, 100);
           rect(rect.x+0.5*rect.width, rect.y+0.5*rect.height, f*rect.width, f*rect.height);
-//          fill(200,0,0,255);
-//          text(nf(value,1,2)+"",rect.x+0.5*rect.width,rect.y+0.5*rect.height);  
-      }
-
+        }
       }
     }
     popStyle();

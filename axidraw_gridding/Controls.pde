@@ -28,7 +28,7 @@ class Controls
   // ------------------------------------------------------
   Group gGrid;
   Slider sliderGridResx, sliderGridResy;
-  Toggle tgDrawGrid, tgIsSquare;
+  Toggle tgDrawGrid, tgIsSquare, tgComputeStripes, tgDrawPolygons;
   Slider sliderPerturbationAmount, sliderRndCell;
   Button btnExportSVG;
 
@@ -78,7 +78,9 @@ class Controls
     y+=(hControl+padding);
     tgDrawGrid = cp5.addToggle("drawGrid").setLabel("draw grid").setPosition(x, y).setSize(hControl, hControl).setValue(grid.bDrawGrid).setGroup(gGrid).addCallback(cbGrid);
     tgIsSquare = cp5.addToggle("isSquare").setLabel("is square").setPosition(x+3*hControl, y).setSize(hControl, hControl).setValue(grid.bSquare).setGroup(gGrid).addCallback(cbGrid);
-    tgIsSquare = cp5.addToggle("drawField").setLabel("draw field").setPosition(x+5*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawField).setGroup(gGrid).addCallback(cbGrid);
+    tgIsSquare = cp5.addToggle("drawField").setLabel("draw field").setPosition(x+6*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawField).setGroup(gGrid).addCallback(cbGrid);
+    tgComputeStripes = cp5.addToggle("computeStripes").setLabel("stripes").setPosition(x+9*hControl, y).setSize(hControl, hControl).setValue(grid.bComputeStripes).setGroup(gGrid).addCallback(cbGrid);
+    tgDrawPolygons = cp5.addToggle("drawPolygons").setLabel("polygons").setPosition(x+12*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawPolygons).setGroup(gGrid).addCallback(cbGrid);
     y+=(hControl+padding+8);
     sliderPerturbationAmount =  cp5.addSlider("perturbation").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.perturbationAmount).setGroup(gGrid).addCallback(cbGrid);
     y+=(hControl+padding);
@@ -132,6 +134,12 @@ class Controls
         }
         else if (name.equals("drawField")) {
           grid.bDrawField = value > 0.0;
+        }
+        else if (name.equals("computeStripes")) {
+          grid.bComputeStripes = value > 0.0;
+        }
+        else if (name.equals("drawPolygons")) {
+          grid.bDrawPolygons = value > 0.0;
         }
         else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );
