@@ -27,7 +27,7 @@ int windowWidth = 1400;
 int windowHeight = 1000;
 
 // Resolution max for grid (both x & y)
-int nbGridResMax = 20;
+int nbGridResMax = 30;
 int gridMargin = 40;
 
 // Export folder (relative to sketch)
@@ -55,10 +55,7 @@ void settings()
   rectColumnLeft = new Rect(0,0,wRectColumn,windowHeight);
   rectColumnRight = new Rect(width-wRectColumn,0,wRectColumn,windowHeight);
   float wRectGrid = width - (rectColumnLeft.width+rectColumnRight.width);
-  println(wRectGrid);
   rectGrid = new Rect(wRectColumn,0,wRectGrid,windowHeight);
-  println(rectGrid);
-  
 }
 
 // ------------------------------------------------------
@@ -74,6 +71,9 @@ void setup()
   setupMedias();
   setupGrid();
   setupControls();
+  
+  grid.selectGridCellRenderWithIndex(0);
+  grid.selectGridFieldWithIndex(0);
 }
 
 

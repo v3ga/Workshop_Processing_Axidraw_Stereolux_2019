@@ -95,3 +95,54 @@ class GridFieldSine extends GridField implements CallbackListener
     return map( sin( d * TWO_PI * this.nbPeriod ), -1, 1, 0, 1 );
   }
 }
+
+// ----------------------------------------------------------
+class GridFieldNoise extends GridField implements CallbackListener
+{
+  float nbPeriod = 1;
+  Slider sliderNbPeriod;
+
+  // ----------------------------------------------------------
+  GridFieldNoise(Grid grid)
+  {
+    super("Perlin Noise", grid);
+  }
+
+  // ----------------------------------------------------------
+  void createControls()
+  {
+    int margin = 5;
+    int wControl = int(rectColumnRight.width - 2*margin)-60;
+    int hControl = 20;
+    int padding = 10;
+    int x = 5;
+    int y = 10;
+
+    ControlP5 cp5 = controls.cp5;
+    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
+
+    cp5.setBroadcast(false);
+
+    cp5.setBroadcast(true);
+}
+
+  // ----------------------------------------------------------
+  public void controlEvent(CallbackEvent theEvent) 
+  {
+    switch(theEvent.getAction()) 
+    {
+    case ControlP5.ACTION_RELEASED: 
+    case ControlP5.ACTION_RELEASEDOUTSIDE: 
+      break;
+    }
+  }
+
+
+  // ----------------------------------------------------------
+  float getValue(float x, float y)
+  {
+    float cx = this.grid.x + 0.5*this.grid.w;
+    float cy = this.grid.y + 0.5*this.grid.h;
+    return noise( 0.01*x, 0.01*y);
+  }
+}

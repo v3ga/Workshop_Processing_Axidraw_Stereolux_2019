@@ -29,6 +29,7 @@ class Controls
   Group gGrid;
   Slider sliderGridResx, sliderGridResy;
   Toggle tgDrawGrid, tgIsSquare, tgComputeStripes, tgDrawPolygons;
+  DropdownList dlGridCellRender, dlGridField;
   Slider sliderPerturbationAmount, sliderRndCell;
   Button btnExportSVG;
 
@@ -82,15 +83,40 @@ class Controls
     tgComputeStripes = cp5.addToggle("computeStripes").setLabel("stripes").setPosition(x+9*hControl, y).setSize(hControl, hControl).setValue(grid.bComputeStripes).setGroup(gGrid).addCallback(cbGrid);
     tgDrawPolygons = cp5.addToggle("drawPolygons").setLabel("polygons").setPosition(x+12*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawPolygons).setGroup(gGrid).addCallback(cbGrid);
     y+=(hControl+padding+8);
+    dlGridCellRender = cp5.addDropdownList("dlGridCellRender").setPosition(x, y).setWidth(wControl/2-padding).setGroup(gGrid).setLabel("grid cell").addCallback(cbGrid);
+    dlGridField = cp5.addDropdownList("dlGridField").setPosition(x+wControl/2, y).setWidth(wControl/2).setGroup(gGrid).setLabel("grid field").addCallback(cbGrid);
+    customizeDropdown(dlGridCellRender,hControl);
+    customizeDropdown(dlGridField,hControl);
+    y+=(hControl+padding);
     sliderPerturbationAmount =  cp5.addSlider("perturbation").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.perturbationAmount).setGroup(gGrid).addCallback(cbGrid);
     y+=(hControl+padding);
     sliderRndCell =  cp5.addSlider("rndCell").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.rndDrawCell).setGroup(gGrid).addCallback(cbGrid);
 
     btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, height - hControl - margin);
+    
+    // Populate Dropdowns
+    int indexItem = 1;
+    for (GridCellRender gcr : grid.listRenders)
+      dlGridCellRender.addItem(gcr.name, indexItem++);
+    indexItem = 1;
+    for (GridField gf : grid.listFields)
+      dlGridField.addItem(gf.name, indexItem++);
+
+    dlGridCellRender.close();
+    dlGridField.close();
+    dlGridCellRender.bringToFront();
+    dlGridField.bringToFront();
 
     cp5.setBroadcast(true);
   }
 
+
+  // ----------------------------------------------------------
+  void customizeDropdown(DropdownList dl, int h)
+  {
+    dl.setItemHeight(h);
+    dl.setBarHeight(h);
+  }
   // ----------------------------------------------------------
   void update()
   {
@@ -109,9 +135,12 @@ class Controls
       {
       case ControlP5.ACTION_RELEASED: 
       case ControlP5.ACTION_RELEASEDOUTSIDE: 
+        
         String name = theEvent.getController().getName();
         float value = theEvent.getController().getValue();
-        //      println(name + "/"+value);
+        
+        //println(name + "/"+value);
+
         if (name.equals("resx"))
         {
           grid.setResx( (int) value  );
@@ -120,26 +149,29 @@ class Controls
         { 
           grid.setResy( (int) value );
           updateControls();
-        } 
-        else if (name.equals("drawGrid")) {
+        } else if (name.equals("drawGrid")) {
           grid.bDrawGrid = value > 0.0;
-        }
-        else if (name.equals("isSquare")) 
+        } else if (name.equals("isSquare")) 
         {
           boolean is = value > 0.0;
           grid.setSquare(is);
           if (is==false)
             grid.setResy( int(sliderGridResy.getValue()) );
           updateControls();
-        }
-        else if (name.equals("drawField")) {
+        } else if (name.equals("drawField")) {
           grid.bDrawField = value > 0.0;
-        }
-        else if (name.equals("computeStripes")) {
+        } else if (name.equals("computeStripes")) {
           grid.bComputeStripes = value > 0.0;
-        }
-        else if (name.equals("drawPolygons")) {
+        } else if (name.equals("drawPolygons")) {
           grid.bDrawPolygons = value > 0.0;
+        }
+        else if (name.equals("dlGridCellRender"))
+        {
+            grid.selectGridCellRenderWithIndex( int(value) );
+        }
+        else if (name.equals("dlGridField"))
+        {
+          grid.selectGridFieldWithIndex(int(value));
         }
         else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );

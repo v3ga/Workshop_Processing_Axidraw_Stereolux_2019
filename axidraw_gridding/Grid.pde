@@ -45,19 +45,70 @@ class Grid
 
     this.adjustResolutionSquare();
 
-    // TEMP
-    this.gridCellRender = new GridCellRenderEllipse(this);
-    this.gridField = new GridFieldSine(this);
     this.stripes = new Stripes();
+
+    listRenders.add( new GridCellRenderEllipse(this)  );
+    listRenders.add( new GridCellRenderTruchet (this)  );
+    listFields.add( new GridFieldSine(this)  );
+    listFields.add( new GridFieldNoise(this)  );
   }
 
   // ----------------------------------------------------------
   void createControls()
   {
-    this.gridCellRender.createControls();
-    this.gridField.createControls();
+    for (GridCellRender gcr : listRenders)
+    {
+      gcr.createControls();
+    }
+
+    for (GridField gf : listFields)
+    {
+      gf.createControls();
+    }
+    showGridCellRenderControls(null);
+    showGridFieldControls(null);
   }
 
+  // ----------------------------------------------------------
+  void showGridCellRenderControls(GridCellRender selected)
+  {
+    for (GridCellRender gcr : listRenders)
+      gcr.g.hide();
+    if (selected != null) selected.g.show();
+  }
+
+  // ----------------------------------------------------------
+  void showGridFieldControls(GridField selected)
+  {
+    for (GridField gf : listFields)
+      gf.g.hide();
+    if (selected != null) selected.g.show();
+  }
+
+  // ----------------------------------------------------------
+  void selectGridCellRenderWithIndex(int index)
+  {
+    if (index < this.listRenders.size())
+    {
+      this.gridCellRender = listRenders.get(index);
+      showGridCellRenderControls(this.gridCellRender);
+      
+      this.bComputeGridVec = true;
+    }
+  }
+  
+  // ----------------------------------------------------------
+  void selectGridFieldWithIndex(int index)
+  {
+    if (index < this.listFields.size())
+    {
+      this.gridField = listFields.get(index);
+      showGridFieldControls(this.gridField);
+      
+      this.bComputeGridVec = true;
+    }
+  }  
+  
   // ----------------------------------------------------------
   void setPosition(float x, float y)
   {
@@ -260,7 +311,7 @@ class Grid
       ArrayList<Polygon2D> polygons = this.gridCellRender.listPolygons;
       for (Polygon2D p : polygons)
       {
-        stripes.computeWithDistance(p, 6, 0, 0, 3);
+        stripes.computeWithDistance(p, 6, 0, 0, 9);
       }
     }
   }
@@ -364,12 +415,11 @@ class Grid
 
     if (bDrawPolygons && gridCellRender != null)
       gridCellRender.draw();
- 
-   if (bComputeStripes)
-   {
-     stripes.draw();
-   }
 
+    if (bComputeStripes)
+    {
+      stripes.draw();
+    }
   }
 
   // ----------------------------------------------------------
