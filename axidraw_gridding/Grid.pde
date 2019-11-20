@@ -35,6 +35,12 @@ class Grid
   GridField gridField;
   // Stripes
   Stripes stripes;
+  // Stripes / angle strategy
+  // 0 = constant vertical
+  // 1 = cosntant horizontal
+  // 2 = random orthogonal
+  // 3 = bound to field value
+  int stripesAngleStrategy = 0;  
 
   // ----------------------------------------------------------
   Grid(int resx, int resy, Rect rectViewport)
@@ -49,6 +55,7 @@ class Grid
 
     listRenders.add( new GridCellRenderEllipse(this)  );
     listRenders.add( new GridCellRenderTruchet (this)  );
+    listFields.add( new GridFieldConstant(this)  );
     listFields.add( new GridFieldSine(this)  );
     listFields.add( new GridFieldNoise(this)  );
   }
@@ -92,11 +99,11 @@ class Grid
     {
       this.gridCellRender = listRenders.get(index);
       showGridCellRenderControls(this.gridCellRender);
-      
+
       this.bComputeGridVec = true;
     }
   }
-  
+
   // ----------------------------------------------------------
   void selectGridFieldWithIndex(int index)
   {
@@ -104,11 +111,18 @@ class Grid
     {
       this.gridField = listFields.get(index);
       showGridFieldControls(this.gridField);
-      
+
       this.bComputeGridVec = true;
     }
   }  
-  
+
+  // ----------------------------------------------------------
+  void setStripesStrategy(int which)
+  {
+    this.stripesAngleStrategy = which;
+    this.bComputeGridVec = true;
+  }
+
   // ----------------------------------------------------------
   void setPosition(float x, float y)
   {
@@ -288,30 +302,58 @@ class Grid
   {
     if ( this.gridCellRender != null)
     {
-      this.gridCellRender.beginCompute();
-      if (bComputeStripes)
-        stripes.beginCompute();
-
-      int i, j, offset;
-      for (j=0; j<this.resy; j++)
+      if (bModeDirect == false)
       {
-        for (i=0; i<this.resx; i++)
+        this.gridCellRender.beginCompute();
+        if (bComputeStripes)
+          stripes.beginCompute();
+
+        int i, j, offset;
+        for (j=0; j<this.resy; j++)
         {
-          offset = i + this.resx*j;
-          if (bDrawCell[offset])
+          for (i=0; i<this.resx; i++)
           {
-            this.gridCellRender.compute( this.rects[offset], this.cells[offset] );
+            offset = i + this.resx*j;
+            if (bDrawCell[offset])
+            {
+              this.gridCellRender.compute( this.rects[offset], this.cells[offset] );
+            }
+          }
+        }
+
+        if (bComputeStripes)
+        {
+          ArrayList<Polygon2D> polygons = this.gridCellRender.listPolygons;
+          float angle = 0.0;
+          float fieldValue = 0.0;
+          for (Polygon2D p : polygons)
+          {
+            fieldValue = gridField.getValue( p.getCentroid());
+            if (this.stripesAngleStrategy == 0)
+            {
+              angle = 0.0;
+            }
+            else if (this.stripesAngleStrategy == 1)
+            {
+              angle = 90.0;
+            }
+            else if (this.stripesAngleStrategy == 2)
+            {
+              angle = random(1) < 0.5 ? 0.0 : 90.0;
+            }
+            else if (this.stripesAngleStrategy == 3)
+            {
+              angle = map( fieldValue, 0, 1, -180.0, 180.0);
+            }
+            
+            stripes.computeWithDistance(p, radians(angle), 0, 0, map( fieldValue, 0, 1, 3, 12) );
           }
         }
       }
-    }
-
-    if (bComputeStripes)
-    {
-      ArrayList<Polygon2D> polygons = this.gridCellRender.listPolygons;
-      for (Polygon2D p : polygons)
+      // Mode Direct
+      else
       {
-        stripes.computeWithDistance(p, 6, 0, 0, 9);
+        this.gridCellRender.computeDirect();
       }
     }
   }
@@ -374,7 +416,7 @@ class Grid
     if (bDrawGrid)
     {
       pushStyle();
-      stroke(0, 100);
+      stroke(colorStroke, 100);
       strokeWeight(1);
       noFill();
       Vec2D A, B, C, D;
@@ -401,7 +443,7 @@ class Grid
 
       endShape();
 
-      stroke(0, 20);
+      stroke(colorStroke, 20);
       Rect r;
       for (int i=0; i<this.rects.length; i++)
       {
@@ -413,10 +455,29 @@ class Grid
     }
 
 
-    if (bDrawPolygons && gridCellRender != null)
-      gridCellRender.draw();
+    if (gridCellRender != null)
+    {
+      if (bModeDirect==false)
+      {
+        if (bDrawPolygons)
+        {
+          gridCellRender.draw();
+        }
+      } else
+      {
+        int i, j, offset;
+        for (j=0; j<this.resy; j++)
+        {
+          for (i=0; i<this.resx; i++)
+          {
+            offset = i + this.resx*j;
+            gridCellRender.drawDirect(rects[offset], i, j);
+          }
+        }
+      }
+    }
 
-    if (bComputeStripes)
+    if (bComputeStripes && bModeDirect==false)
     {
       stripes.draw();
     }

@@ -27,10 +27,12 @@ class Controls
 
   // ------------------------------------------------------
   Group gGrid;
+  Toggle tgDarkMode;
   Slider sliderGridResx, sliderGridResy;
-  Toggle tgDrawGrid, tgIsSquare, tgComputeStripes, tgDrawPolygons;
+  Toggle tgDrawGrid, tgIsSquare, tgDrawField, tgComputeStripes, tgDrawPolygons;
   DropdownList dlGridCellRender, dlGridField;
   Slider sliderPerturbationAmount, sliderRndCell;
+  DropdownList dlStripesAngleStrategy;
   Button btnExportSVG;
 
   public Controls(PApplet _parent)
@@ -71,6 +73,8 @@ class Controls
     gGrid = cp5.addGroup("Grid").setBackgroundHeight(400).setWidth(int(rectColumnLeft.width)).setBackgroundColor(color(0, 190)).setPosition(int(rectColumnLeft.x), 10);
 
     cp5.setBroadcast(false);
+    tgDarkMode = cp5.addToggle("darkMode").setLabel("dark mode").setPosition(x, y).setSize(hControl, hControl).setValue(bDarkMode).setGroup(gGrid).addCallback(cbGrid);
+    y+=(hControl+padding+8);
     sliderGridResx = cp5.addSlider("resx").setPosition(x, y).setSize(wControl, hControl).setRange(1, nbGridResMax).setNumberOfTickMarks(nbGridResMax).setGroup(gGrid).addCallback(cbGrid);
     sliderGridResx.setValue(grid.resx);
     y+=(hControl+padding);
@@ -79,33 +83,52 @@ class Controls
     y+=(hControl+padding);
     tgDrawGrid = cp5.addToggle("drawGrid").setLabel("draw grid").setPosition(x, y).setSize(hControl, hControl).setValue(grid.bDrawGrid).setGroup(gGrid).addCallback(cbGrid);
     tgIsSquare = cp5.addToggle("isSquare").setLabel("is square").setPosition(x+3*hControl, y).setSize(hControl, hControl).setValue(grid.bSquare).setGroup(gGrid).addCallback(cbGrid);
-    tgIsSquare = cp5.addToggle("drawField").setLabel("draw field").setPosition(x+6*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawField).setGroup(gGrid).addCallback(cbGrid);
-    tgComputeStripes = cp5.addToggle("computeStripes").setLabel("stripes").setPosition(x+9*hControl, y).setSize(hControl, hControl).setValue(grid.bComputeStripes).setGroup(gGrid).addCallback(cbGrid);
-    tgDrawPolygons = cp5.addToggle("drawPolygons").setLabel("polygons").setPosition(x+12*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawPolygons).setGroup(gGrid).addCallback(cbGrid);
+    tgDrawField = cp5.addToggle("drawField").setLabel("draw field").setPosition(x+6*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawField).setGroup(gGrid).addCallback(cbGrid);
+    if (bModeDirect == false)
+    {
+      tgComputeStripes = cp5.addToggle("computeStripes").setLabel("stripes").setPosition(x+9*hControl, y).setSize(hControl, hControl).setValue(grid.bComputeStripes).setGroup(gGrid).addCallback(cbGrid);
+      tgDrawPolygons = cp5.addToggle("drawPolygons").setLabel("polygons").setPosition(x+12*hControl, y).setSize(hControl, hControl).setValue(grid.bDrawPolygons).setGroup(gGrid).addCallback(cbGrid);
+    }
     y+=(hControl+padding+8);
     dlGridCellRender = cp5.addDropdownList("dlGridCellRender").setPosition(x, y).setWidth(wControl/2-padding).setGroup(gGrid).setLabel("grid cell").addCallback(cbGrid);
     dlGridField = cp5.addDropdownList("dlGridField").setPosition(x+wControl/2, y).setWidth(wControl/2).setGroup(gGrid).setLabel("grid field").addCallback(cbGrid);
     customizeDropdown(dlGridCellRender,hControl);
     customizeDropdown(dlGridField,hControl);
     y+=(hControl+padding);
-    sliderPerturbationAmount =  cp5.addSlider("perturbation").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.perturbationAmount).setGroup(gGrid).addCallback(cbGrid);
-    y+=(hControl+padding);
-    sliderRndCell =  cp5.addSlider("rndCell").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.rndDrawCell).setGroup(gGrid).addCallback(cbGrid);
+    if (bModeDirect == false)
+    {
+      sliderPerturbationAmount =  cp5.addSlider("perturbation").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.perturbationAmount).setGroup(gGrid).addCallback(cbGrid);
+      y+=(hControl+padding);
+      sliderRndCell =  cp5.addSlider("rndCell").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.rndDrawCell).setGroup(gGrid).addCallback(cbGrid);
+      y+=(hControl+padding);
+    }
 
+    dlStripesAngleStrategy = cp5.addDropdownList("dlStripesAngleStrategy").setPosition(x, y).setWidth(wControl/2).setGroup(gGrid).setLabel("stripes angle strategy").addCallback(cbGrid);
+    customizeDropdown(dlStripesAngleStrategy,hControl);
+    
     btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, height - hControl - margin);
     
     // Populate Dropdowns
+    // DL Grid Cell Render
     int indexItem = 1;
     for (GridCellRender gcr : grid.listRenders)
       dlGridCellRender.addItem(gcr.name, indexItem++);
+    // DL Grid field
     indexItem = 1;
     for (GridField gf : grid.listFields)
       dlGridField.addItem(gf.name, indexItem++);
+    // DL Stripes angle strategy
+    dlStripesAngleStrategy.addItem("constant vertical", 0);
+    dlStripesAngleStrategy.addItem("constant horizontal", 1);
+    dlStripesAngleStrategy.addItem("random orthogonal", 2);
+    dlStripesAngleStrategy.addItem("bound to field value", 2);
 
     dlGridCellRender.close();
     dlGridField.close();
+    dlStripesAngleStrategy.close();
     dlGridCellRender.bringToFront();
     dlGridField.bringToFront();
+    dlStripesAngleStrategy.bringToFront();
 
     cp5.setBroadcast(true);
   }
@@ -141,7 +164,12 @@ class Controls
         
         //println(name + "/"+value);
 
-        if (name.equals("resx"))
+        if (name.equals("darkMode"))
+        {
+          bDarkMode = int(value) > 0.0;
+          setupColors();
+        }
+        else if (name.equals("resx"))
         {
           grid.setResx( (int) value  );
           updateControls();
@@ -172,6 +200,10 @@ class Controls
         else if (name.equals("dlGridField"))
         {
           grid.selectGridFieldWithIndex(int(value));
+        }
+        else if (name.equals("dlStripesAngleStrategy"))
+        {
+          grid.setStripesStrategy(int(value));
         }
         else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );

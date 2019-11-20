@@ -22,6 +22,18 @@ import toxi.math.*;
 
 
 // ------------------------------------------------------
+boolean bModeDirect = false;
+
+// ------------------------------------------------------
+// Colors
+boolean bDarkMode = true;
+
+// Colors constants + variables
+color COLOR_BLACK = color(0);
+color COLOR_WHITE = color(255);
+color colorBackground = COLOR_BLACK;
+color colorStroke = COLOR_WHITE;
+
 // Window dimensions
 int windowWidth = 1400;
 int windowHeight = 1000;
@@ -49,6 +61,13 @@ boolean bExportSVG = false;
 void settings()
 {
   size(windowWidth,windowHeight);
+  setupLayout();
+  setupColors();
+}
+
+// ------------------------------------------------------
+void setupLayout()
+{
 
   float r = 0.25;
   float wRectColumn = r*windowWidth;
@@ -56,6 +75,14 @@ void settings()
   rectColumnRight = new Rect(width-wRectColumn,0,wRectColumn,windowHeight);
   float wRectGrid = width - (rectColumnLeft.width+rectColumnRight.width);
   rectGrid = new Rect(wRectColumn,0,wRectGrid,windowHeight);
+}
+
+
+// ------------------------------------------------------
+void setupColors()
+{
+    colorBackground = bDarkMode ? COLOR_BLACK : COLOR_WHITE;
+    colorStroke = bDarkMode ? COLOR_WHITE : COLOR_BLACK;
 }
 
 // ------------------------------------------------------
@@ -80,7 +107,8 @@ void setup()
 // ------------------------------------------------------
 void draw()
 {
-  background(255);
+  background(colorBackground);
+  drawLayout();
   grid.compute();
   if (bExportSVG)
   {
@@ -94,7 +122,18 @@ void draw()
   }
   grid.drawField();
   controls.draw();
-  drawDebug();
+  //drawDebug();
+}
+
+// ------------------------------------------------------
+void drawLayout()
+{
+  pushStyle();
+  noStroke();
+  fill(0);
+  rect(rectColumnLeft.x,rectColumnLeft.y,rectColumnLeft.width,rectColumnLeft.height);
+  rect(rectColumnRight.x,rectColumnRight.y,rectColumnRight.width,rectColumnRight.height);
+  popStyle();
 }
 
 // ------------------------------------------------------

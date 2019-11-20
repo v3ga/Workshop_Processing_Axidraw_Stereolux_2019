@@ -122,7 +122,7 @@ class Stripes
   void drawWithMode(String mode)
   {
     pushStyle();
-    stroke(0);
+    stroke(colorStroke);
     strokeWeight(1);
 
     if (mode.equals("normal"))

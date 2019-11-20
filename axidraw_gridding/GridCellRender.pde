@@ -7,7 +7,8 @@ class GridCellRender
   Grid grid;
   ArrayList<Polygon2D> listPolygons;
   Group g;
-
+  boolean bDrawDirect = true;
+  boolean bDrawPolygon = true;
 
   // ----------------------------------------------------------
   GridCellRender(String name, Grid grid)
@@ -26,6 +27,12 @@ class GridCellRender
   void compute(Rect rect, Polygon2D quad)
   {
   }
+  
+  // ----------------------------------------------------------
+  void computeDirect()
+  {
+  }
+  
   // ----------------------------------------------------------
   String _id(String s)
   {
@@ -65,7 +72,7 @@ class GridCellRender
     {
       pushStyle();
       noFill();
-      stroke(0, 255);
+      stroke(colorStroke, 255);
       strokeWeight(1);
       for (Polygon2D p : listPolygons)
       {
@@ -73,5 +80,11 @@ class GridCellRender
       }
       popStyle();
     }
+  }
+
+  // ----------------------------------------------------------
+  void drawDirect(Rect rect, int i, int j)
+  {
+
   }
 }

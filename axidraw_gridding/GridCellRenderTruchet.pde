@@ -2,6 +2,7 @@ class GridCellRenderTruchet extends GridCellRender implements CallbackListener
 {
   // ----------------------------------------------------------
   // Parameters
+  int[][] random;
 
   // ----------------------------------------------------------
   // Controls
@@ -11,6 +12,8 @@ class GridCellRenderTruchet extends GridCellRender implements CallbackListener
   {
     super("Truchet", grid);
     this.grid = grid;
+    this.bDrawDirect = true;
+    this.bDrawPolygon = false;
   }
 
   // ----------------------------------------------------------
@@ -43,11 +46,44 @@ class GridCellRenderTruchet extends GridCellRender implements CallbackListener
     }
   }
 
+  // ----------------------------------------------------------
+  void computeDirect()
+  {
+    int i, j, offset;
+    this.random = new int[this.grid.resx][this.grid.resy];
+    
+    for (j=0; j<this.grid.resy; j++)
+    {
+      for (i=0; i<this.grid.resx; i++)
+      {
+        this.random[i][j] = int(random(4));
+      }
+    }
+  }
 
   // ----------------------------------------------------------
-  void compute(Rect rect, Polygon2D quad)
+  void drawDirect(Rect rect, int i, int j)
   {
-    // Center of rect
-    Vec2D c = new Vec2D(rect.x+0.5*rect.width, rect.y+0.5*rect.height);
+    float x = rect.x;
+    float y = rect.y;
+    float w = rect.width;
+    float h = rect.height;
+  
+    if (random[i][j] == 0)
+    {
+      line(x,y,x+w,y+h);
+    }
+    else if (random[i][j] == 1)
+    {
+      line(x,y+h,x+w,y);
+    }
+    else if (random[i][j] == 2)
+    {
+      line(x+w/2,y,x+w/2,y+h);
+    }
+    else if (random[i][j] == 3)
+    {
+      line(x,y+h/2,x+w,y+h/2);
+    }
   }
 }

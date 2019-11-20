@@ -66,7 +66,6 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
     }
   }
 
-
   // ----------------------------------------------------------
   void compute(Rect rect, Polygon2D quad)
   {
@@ -79,5 +78,15 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
       Polygon2D ellipse = new Ellipse(c, new Vec2D(this.ellipseScalex*grid.wCell/2, this.ellipseScaley*grid.hCell/2)).toPolygon2D(this.ellipseRes); 
       listPolygons.add(  constrainIntoQuad(ellipse, rect, quad) );
     }
+  }
+
+  // ----------------------------------------------------------
+  void drawDirect(Rect rect, int i, int j)
+  {
+    pushStyle();
+    noFill();
+    stroke(colorStroke);
+    ellipse(rect.x+0.5*rect.width,rect.y+0.5*rect.height, this.ellipseScalex*rect.width, this.ellipseScaley*rect.height);  
+    popStyle();
   }
 }
