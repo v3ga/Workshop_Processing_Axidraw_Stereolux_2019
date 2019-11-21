@@ -2,7 +2,9 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
 {
   // ----------------------------------------------------------
   // Parameters
+  // Number of points for the ellipse
   int ellipseRes = 20;
+  // Scale along x,y axis
   float ellipseScalex = 1.0, ellipseScaley = 1.0;
 
   // ----------------------------------------------------------

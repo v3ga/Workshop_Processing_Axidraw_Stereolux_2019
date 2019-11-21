@@ -46,6 +46,9 @@ int gridMargin = 40;
 String strExportFolder = "data/exports/svg/";
 
 // ------------------------------------------------------
+boolean bDrawDebug = false;
+
+// ------------------------------------------------------
 Grid grid;
 
 // ------------------------------------------------------
@@ -115,7 +118,7 @@ void draw()
   grid.draw();
   endExportSVG();
   controls.draw();
-  //drawDebug();
+  drawDebug();
 }
 
 // ------------------------------------------------------
@@ -150,13 +153,16 @@ void drawLayout()
 // ------------------------------------------------------
 void drawDebug()
 {
-  pushStyle();
-  noFill();
-  stroke(200,0,0,50);
-  rect(rectColumnLeft.x,rectColumnLeft.y,rectColumnLeft.width,rectColumnLeft.height);
-  rect(rectColumnRight.x,rectColumnRight.y,rectColumnRight.width,rectColumnRight.height);
-  rect(rectGrid.x,rectGrid.y,rectGrid.width,rectGrid.height);
-  popStyle();
+  if (bDrawDebug)
+  {
+    pushStyle();
+    noFill();
+    stroke(200,0,0,50);
+    rect(rectColumnLeft.x,rectColumnLeft.y,rectColumnLeft.width,rectColumnLeft.height);
+    rect(rectColumnRight.x,rectColumnRight.y,rectColumnRight.width,rectColumnRight.height);
+    rect(rectGrid.x,rectGrid.y,rectGrid.width,rectGrid.height);
+    popStyle();
+  }
 }
 
 

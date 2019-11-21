@@ -92,8 +92,8 @@ class Controls
     y+=(hControl+padding+8);
     dlGridCellRender = cp5.addDropdownList("dlGridCellRender").setPosition(x, y).setWidth(wControl/2-padding).setGroup(gGrid).setLabel("grid cell").addCallback(cbGrid);
     dlGridField = cp5.addDropdownList("dlGridField").setPosition(x+wControl/2, y).setWidth(wControl/2).setGroup(gGrid).setLabel("grid field").addCallback(cbGrid);
-    customizeDropdown(dlGridCellRender,hControl);
-    customizeDropdown(dlGridField,hControl);
+    customizeDropdown(dlGridCellRender, hControl);
+    customizeDropdown(dlGridField, hControl);
     y+=(hControl+padding);
     if (bModeDirect == false)
     {
@@ -103,11 +103,14 @@ class Controls
       y+=(hControl+padding);
     }
 
+    cp5.addLabel("Stripes").setPosition(x, y).setColor(color(255));
+    y+=(hControl+padding);
+
     dlStripesAngleStrategy = cp5.addDropdownList("dlStripesAngleStrategy").setPosition(x, y).setWidth(wControl/2).setGroup(gGrid).setLabel("stripes angle strategy").addCallback(cbGrid);
-    customizeDropdown(dlStripesAngleStrategy,hControl);
-    
+    customizeDropdown(dlStripesAngleStrategy, hControl);
+
     btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, height - hControl - margin);
-    
+
     // Populate Dropdowns
     // DL Grid Cell Render
     int indexItem = 1;
@@ -158,18 +161,17 @@ class Controls
       {
       case ControlP5.ACTION_RELEASED: 
       case ControlP5.ACTION_RELEASEDOUTSIDE: 
-        
+
         String name = theEvent.getController().getName();
         float value = theEvent.getController().getValue();
-        
+
         //println(name + "/"+value);
 
         if (name.equals("darkMode"))
         {
           bDarkMode = int(value) > 0.0;
           setupColors();
-        }
-        else if (name.equals("resx"))
+        } else if (name.equals("resx"))
         {
           grid.setResx( (int) value  );
           updateControls();
@@ -193,20 +195,16 @@ class Controls
           grid.bComputeGridVec = true;
         } else if (name.equals("drawPolygons")) {
           grid.bDrawPolygons = value > 0.0;
-        }
-        else if (name.equals("dlGridCellRender"))
+        } else if (name.equals("dlGridCellRender"))
         {
-            grid.selectGridCellRenderWithIndex( int(value) );
-        }
-        else if (name.equals("dlGridField"))
+          grid.selectGridCellRenderWithIndex( int(value) );
+        } else if (name.equals("dlGridField"))
         {
           grid.selectGridFieldWithIndex(int(value));
-        }
-        else if (name.equals("dlStripesAngleStrategy"))
+        } else if (name.equals("dlStripesAngleStrategy"))
         {
           grid.setStripesStrategy(int(value));
-        }
-        else if (name.equals("rndCell")) { 
+        } else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );
         } else if (name.equals("perturbation")) {
           grid.setPerturbationAmount( value );
