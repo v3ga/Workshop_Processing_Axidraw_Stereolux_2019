@@ -9,12 +9,14 @@ class GridCellRender
   Group g;
   boolean bDrawDirect = true;
   boolean bDrawPolygon = true;
+  Stripes stripes;
 
   // ----------------------------------------------------------
   GridCellRender(String name, Grid grid)
   {
     this.name = name;
     this.grid = grid;
+    this.stripes = new Stripes();
   }
 
   // ----------------------------------------------------------
@@ -27,12 +29,12 @@ class GridCellRender
   void compute(Rect rect, Polygon2D quad)
   {
   }
-  
+
   // ----------------------------------------------------------
   void computeDirect()
   {
   }
-  
+
   // ----------------------------------------------------------
   String _id(String s)
   {
@@ -50,7 +52,7 @@ class GridCellRender
   {
     g.hide();
   }
-  
+
   // ----------------------------------------------------------
   void createControls()
   {
@@ -63,6 +65,39 @@ class GridCellRender
     for (Vec2D v : p.vertices)
       vertex(v.x, v.y);
     endShape(CLOSE);
+  }
+
+  // ----------------------------------------------------------
+  void beginComputeStripes()
+  {
+    this.stripes.beginCompute();
+  }
+
+  // ----------------------------------------------------------
+  void computeStripes(Polygon2D p, int stripesAngleStrategy, float value)
+  {
+    float angle = 0.0;
+    if (stripesAngleStrategy == 0)
+    {
+      angle = 0.0;
+    } else if (stripesAngleStrategy == 1)
+    {
+      angle = 90.0;
+    } else if (stripesAngleStrategy == 2)
+    {
+      angle = random(1) < 0.5 ? 0.0 : 90.0;
+    } else if (stripesAngleStrategy == 3)
+    {
+      angle = map( value, 0, 1, -180.0, 180.0);
+    }
+
+    this.stripes.computeWithDistance(p, radians(angle), 0, 0, map( value, 0, 1, 3, 12) );
+  }
+
+  // ----------------------------------------------------------
+  void drawStripes()
+  {
+    this.stripes.draw();
   }
 
   // ----------------------------------------------------------
@@ -85,6 +120,5 @@ class GridCellRender
   // ----------------------------------------------------------
   void drawDirect(Rect rect, int i, int j)
   {
-
   }
 }

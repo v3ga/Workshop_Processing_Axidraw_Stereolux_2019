@@ -34,7 +34,7 @@ class Grid
   ArrayList<GridField> listFields = new ArrayList<GridField>();
   GridField gridField;
   // Stripes
-  Stripes stripes;
+  // Stripes stripes;
   // Stripes / angle strategy
   // 0 = constant vertical
   // 1 = cosntant horizontal
@@ -51,7 +51,7 @@ class Grid
 
     this.adjustResolutionSquare();
 
-    this.stripes = new Stripes();
+    //    this.stripes = new Stripes();
 
     listRenders.add( new GridCellRenderEllipse(this)  );
     listRenders.add( new GridCellRenderTruchet (this)  );
@@ -171,6 +171,14 @@ class Grid
   {
     this.rndDrawCell = rnd_;
     this.setRandomDrawCell(rnd_);
+  }
+
+  // ----------------------------------------------------------
+  float getFieldValue(Vec2D p)
+  {
+    if (this.gridField != null)
+      return this.gridField.getValue(p);
+    return 0.0;
   }
 
   // ----------------------------------------------------------
@@ -300,13 +308,15 @@ class Grid
   // ----------------------------------------------------------
   void computeCells()
   {
+    println("compute");
     if ( this.gridCellRender != null)
     {
+
+      // Mode "vectoriel"
       if (bModeDirect == false)
       {
         this.gridCellRender.beginCompute();
-        if (bComputeStripes)
-          stripes.beginCompute();
+        this.gridCellRender.beginComputeStripes();
 
         int i, j, offset;
         for (j=0; j<this.resy; j++)
@@ -320,36 +330,8 @@ class Grid
             }
           }
         }
-
-        if (bComputeStripes)
-        {
-          ArrayList<Polygon2D> polygons = this.gridCellRender.listPolygons;
-          float angle = 0.0;
-          float fieldValue = 0.0;
-          for (Polygon2D p : polygons)
-          {
-            fieldValue = gridField.getValue( p.getCentroid());
-            if (this.stripesAngleStrategy == 0)
-            {
-              angle = 0.0;
-            }
-            else if (this.stripesAngleStrategy == 1)
-            {
-              angle = 90.0;
-            }
-            else if (this.stripesAngleStrategy == 2)
-            {
-              angle = random(1) < 0.5 ? 0.0 : 90.0;
-            }
-            else if (this.stripesAngleStrategy == 3)
-            {
-              angle = map( fieldValue, 0, 1, -180.0, 180.0);
-            }
-            
-            stripes.computeWithDistance(p, radians(angle), 0, 0, map( fieldValue, 0, 1, 3, 12) );
-          }
-        }
       }
+
       // Mode Direct
       else
       {
@@ -463,6 +445,7 @@ class Grid
         {
           gridCellRender.draw();
         }
+        gridCellRender.drawStripes();
       } else
       {
         int i, j, offset;
@@ -477,10 +460,11 @@ class Grid
       }
     }
 
-    if (bComputeStripes && bModeDirect==false)
-    {
-      stripes.draw();
-    }
+    /*    if (bComputeStripes && bModeDirect==false)
+     {
+     stripes.draw();
+     }
+     */
   }
 
   // ----------------------------------------------------------

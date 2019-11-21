@@ -190,6 +190,7 @@ class Controls
           grid.bDrawField = value > 0.0;
         } else if (name.equals("computeStripes")) {
           grid.bComputeStripes = value > 0.0;
+          grid.bComputeGridVec = true;
         } else if (name.equals("drawPolygons")) {
           grid.bDrawPolygons = value > 0.0;
         }

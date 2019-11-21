@@ -73,11 +73,17 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
     Vec2D c = new Vec2D(rect.x+0.5*rect.width, rect.y+0.5*rect.height);
 
     // Ellipse
-    //    for (float f=1.0; f>0.8; f=f-0.2)
-    {
-      Polygon2D ellipse = new Ellipse(c, new Vec2D(this.ellipseScalex*grid.wCell/2, this.ellipseScaley*grid.hCell/2)).toPolygon2D(this.ellipseRes); 
-      listPolygons.add(  constrainIntoQuad(ellipse, rect, quad) );
-    }
+    Polygon2D ellipse = new Ellipse(c, new Vec2D(this.ellipseScalex*grid.wCell/2, this.ellipseScaley*grid.hCell/2)).toPolygon2D(this.ellipseRes); 
+
+    // Fit ellipse into quad
+    Polygon2D ellipsePertubation = constrainIntoQuad(ellipse, rect, quad);
+    
+    // Add to polygons list
+    listPolygons.add(  ellipsePertubation );
+  
+    // Stripes ? 
+    if (grid.bComputeStripes)
+      computeStripes(ellipsePertubation, grid.stripesAngleStrategy, grid.getFieldValue( ellipse.getCentroid() ) );
   }
 
   // ----------------------------------------------------------
@@ -86,7 +92,7 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
     pushStyle();
     noFill();
     stroke(colorStroke);
-    ellipse(rect.x+0.5*rect.width,rect.y+0.5*rect.height, this.ellipseScalex*rect.width, this.ellipseScaley*rect.height);  
+    ellipse(rect.x+0.5*rect.width, rect.y+0.5*rect.height, this.ellipseScalex*rect.width, this.ellipseScaley*rect.height);  
     popStyle();
   }
 }
