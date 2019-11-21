@@ -110,20 +110,31 @@ void draw()
   background(colorBackground);
   drawLayout();
   grid.compute();
-  if (bExportSVG)
-  {
-      beginRecord(SVG, strExportFolder + Utils.timestamp() + "_grid.svg");
-  }
+  grid.drawField();
+  beginExportSVG();
   grid.draw();
+  endExportSVG();
+  controls.draw();
+  //drawDebug();
+}
+
+// ------------------------------------------------------
+void beginExportSVG()
+{
+  if (bExportSVG)
+      beginRecord(SVG, strExportFolder + Utils.timestamp() + "_grid.svg");
+}
+
+// ------------------------------------------------------
+void endExportSVG()
+{
   if (bExportSVG)
   {
     endRecord();
     bExportSVG = false;
   }
-  grid.drawField();
-  controls.draw();
-  //drawDebug();
 }
+
 
 // ------------------------------------------------------
 void drawLayout()
