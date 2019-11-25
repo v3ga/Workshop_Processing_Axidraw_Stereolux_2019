@@ -1,14 +1,14 @@
 {
   "perturbationAmount": 0,
-  "bDrawGrid": false,
+  "bDrawGrid": true,
   "bDarkMode": true,
   "rndDrawCell": 0,
   "bComputeStripes": false,
   "bDrawPolygons": true,
-  "gridFieldName": "Constant",
-  "resy": 12,
+  "gridFieldName": "vertical gradient",
+  "resy": 5,
   "bSquare": false,
-  "resx": 12,
+  "resx": 5,
   "bDrawField": false,
-  "gridCellRenderName": "Ellipses"
+  "gridCellRenderName": "Template"
 }
