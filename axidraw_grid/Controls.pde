@@ -20,6 +20,19 @@ void exportSVG()
 }
 
 // ------------------------------------------------------
+void generate()
+{
+  grid.bComputeGridVec = true;
+}
+
+// ------------------------------------------------------
+void saveConfiguration()
+{
+  grid.saveConfiguration("default");
+}
+
+
+// ------------------------------------------------------
 class Controls
 {
   PApplet parent;
@@ -33,7 +46,7 @@ class Controls
   DropdownList dlGridCellRender, dlGridField;
   Slider sliderPerturbationAmount, sliderRndCell;
   DropdownList dlStripesAngleStrategy;
-  Button btnExportSVG;
+  Button btnExportSVG, btnGenerate, btnSaveConfiguration;
 
   public Controls(PApplet _parent)
   {
@@ -101,15 +114,19 @@ class Controls
       y+=(hControl+padding);
       sliderRndCell =  cp5.addSlider("rndCell").setPosition(x, y).setSize(wControl, hControl).setRange(0.0, 1.0).setValue(grid.rndDrawCell).setGroup(gGrid).addCallback(cbGrid);
       y+=(hControl+padding);
+
+      //      cp5.addLabel("Stripes").setPosition(x, y).setColor(color(255));
+      //      y+=(hControl+padding);
+
+      dlStripesAngleStrategy = cp5.addDropdownList("dlStripesAngleStrategy").setPosition(x, y).setWidth(wControl/2).setGroup(gGrid).setLabel("stripes angle strategy").addCallback(cbGrid);
+      customizeDropdown(dlStripesAngleStrategy, hControl);
     }
 
-    cp5.addLabel("Stripes").setPosition(x, y).setColor(color(255));
-    y+=(hControl+padding);
-
-    dlStripesAngleStrategy = cp5.addDropdownList("dlStripesAngleStrategy").setPosition(x, y).setWidth(wControl/2).setGroup(gGrid).setLabel("stripes angle strategy").addCallback(cbGrid);
-    customizeDropdown(dlStripesAngleStrategy, hControl);
-
     btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, height - hControl - margin);
+    btnGenerate = cp5.addButton("generate").setLabel("generate").setPosition(x + padding + btnExportSVG.getWidth(), height - hControl - margin);
+    btnSaveConfiguration = cp5.addButton("saveConfiguration").setLabel("save").setPosition(x + 2*padding + btnExportSVG.getWidth() + btnGenerate.getWidth(), height - hControl - margin);
+
+
 
     // Populate Dropdowns
     // DL Grid Cell Render
@@ -121,17 +138,23 @@ class Controls
     for (GridField gf : grid.listFields)
       dlGridField.addItem(gf.name, indexItem++);
     // DL Stripes angle strategy
-    dlStripesAngleStrategy.addItem("constant vertical", 0);
-    dlStripesAngleStrategy.addItem("constant horizontal", 1);
-    dlStripesAngleStrategy.addItem("random orthogonal", 2);
-    dlStripesAngleStrategy.addItem("bound to field value", 2);
+    if (dlStripesAngleStrategy != null)
+    {
+      dlStripesAngleStrategy.addItem("constant vertical", 0);
+      dlStripesAngleStrategy.addItem("constant horizontal", 1);
+      dlStripesAngleStrategy.addItem("random orthogonal", 2);
+      dlStripesAngleStrategy.addItem("bound to field value", 2);
+    }
+
 
     dlGridCellRender.close();
     dlGridField.close();
-    dlStripesAngleStrategy.close();
     dlGridCellRender.bringToFront();
     dlGridField.bringToFront();
-    dlStripesAngleStrategy.bringToFront();
+    if (dlStripesAngleStrategy != null) {
+      dlStripesAngleStrategy.close();
+      dlStripesAngleStrategy.bringToFront();
+    }
 
     cp5.setBroadcast(true);
   }
@@ -197,13 +220,17 @@ class Controls
           grid.bDrawPolygons = value > 0.0;
         } else if (name.equals("dlGridCellRender"))
         {
-          grid.selectGridCellRenderWithIndex( int(value) );
+          if (theEvent.getController().getLabel().equals("grid cell") == false) // not the wisest ... 
+            grid.selectGridCellRenderWithIndex( int(value) );
         } else if (name.equals("dlGridField"))
         {
-          grid.selectGridFieldWithIndex(int(value));
+          if (theEvent.getController().getLabel().equals("grid field") == false) // not the wisest ... 
+            grid.selectGridFieldWithIndex(int(value));
         } else if (name.equals("dlStripesAngleStrategy"))
         {
-          grid.setStripesStrategy(int(value));
+          if (theEvent.getController().getLabel().equals("stripes angle strategy") == false) // not the wisest ... 
+            grid.setStripesStrategy(int(value));
+          
         } else if (name.equals("rndCell")) { 
           grid.setRndDrawCell( value );
         } else if (name.equals("perturbation")) {

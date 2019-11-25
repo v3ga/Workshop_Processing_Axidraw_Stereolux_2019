@@ -1,0 +1,14 @@
+{
+  "perturbationAmount": 0,
+  "bDrawGrid": false,
+  "bDarkMode": true,
+  "rndDrawCell": 0,
+  "bComputeStripes": false,
+  "bDrawPolygons": true,
+  "gridFieldName": "Constant",
+  "resy": 12,
+  "bSquare": false,
+  "resx": 12,
+  "bDrawField": false,
+  "gridCellRenderName": "Ellipses"
+}

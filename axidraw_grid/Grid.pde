@@ -18,6 +18,7 @@ class Grid
   float rndDrawCell = 0.0;
   // State flags
   boolean bComputeGridVec = true;
+  boolean bUpdateControls = false;
   boolean bDrawGrid = true;
   boolean bSquare = false;
   boolean bDrawField = false;
@@ -28,13 +29,14 @@ class Grid
   String perturbation = "random";
   float rndPerturbationMax = 40.0;
   // Cells rendering
-  ArrayList<GridCellRender> listRenders = new ArrayList<GridCellRender>();
+  ArrayList<GridCellRender> listRendersPolygon = new ArrayList<GridCellRender>();
+  ArrayList<GridCellRender> listRendersDirect = new ArrayList<GridCellRender>();
+  ArrayList<GridCellRender> listRenders;
   GridCellRender gridCellRender;
   // Fields
   ArrayList<GridField> listFields = new ArrayList<GridField>();
   GridField gridField;
   // Stripes
-  // Stripes stripes;
   // Stripes / angle strategy
   // 0 = constant vertical
   // 1 = cosntant horizontal
@@ -51,13 +53,28 @@ class Grid
 
     this.adjustResolutionSquare();
 
-    //    this.stripes = new Stripes();
+    listRenders = bModeDirect ? listRendersDirect : listRendersPolygon;
+  }
 
-    listRenders.add( new GridCellRenderEllipse(this)  );
-    listRenders.add( new GridCellRenderTruchet (this)  );
-    listFields.add( new GridFieldConstant(this)  );
-    listFields.add( new GridFieldSine(this)  );
-    listFields.add( new GridFieldNoise(this)  );
+  // ----------------------------------------------------------
+  void addGridCellRenderDirect(GridCellRender gcr)
+  {
+    listRendersDirect.add(gcr);
+    gcr.grid = this;
+  }
+
+  // ----------------------------------------------------------
+  void addGridCellRenderPolygon(GridCellRender gcr)
+  {
+    listRendersPolygon.add(gcr);
+    gcr.grid = this;
+  }
+
+  // ----------------------------------------------------------
+  void addGridField(GridField gf)
+  {
+    listFields.add(gf);
+    gf.grid = this;
   }
 
   // ----------------------------------------------------------
@@ -80,16 +97,16 @@ class Grid
   void showGridCellRenderControls(GridCellRender selected)
   {
     for (GridCellRender gcr : listRenders)
-      gcr.g.hide();
-    if (selected != null) selected.g.show();
+      gcr.hideControls();
+    if (selected != null) selected.showControls();
   }
 
   // ----------------------------------------------------------
   void showGridFieldControls(GridField selected)
   {
     for (GridField gf : listFields)
-      gf.g.hide();
-    if (selected != null) selected.g.show();
+      gf.hideControls();
+    if (selected != null) selected.showControls();
   }
 
   // ----------------------------------------------------------
@@ -98,9 +115,24 @@ class Grid
     if (index < this.listRenders.size())
     {
       this.gridCellRender = listRenders.get(index);
-      showGridCellRenderControls(this.gridCellRender);
 
       this.bComputeGridVec = true;
+    }
+  }
+
+  // ----------------------------------------------------------
+  void setGridCellRenderWithName(String name)
+  {
+    for (GridCellRender gcr : listRenders)
+    {
+      if (gcr.name.equals(name))
+      {
+        println("setGridCellRenderWithName("+name+")");
+
+        this.gridCellRender = gcr;
+        this.bComputeGridVec = true;
+        this.bUpdateControls = true;
+      }
     }
   }
 
@@ -110,12 +142,28 @@ class Grid
     if (index < this.listFields.size())
     {
       this.gridField = listFields.get(index);
-      showGridFieldControls(this.gridField);
+//      this.gridField.prepare();
 
       this.bComputeGridVec = true;
+      this.bUpdateControls = true;
     }
   }  
 
+  // ----------------------------------------------------------
+  void setGridFieldWithName(String name)
+  {
+    for (GridField gf : listFields)
+    {
+      if (gf.name.equals(name))
+      {
+        println("setGridFieldWithName("+name+")");
+
+        this.gridField = gf;
+        this.bComputeGridVec = true;
+        this.bUpdateControls = true;
+      }
+    }
+  }
   // ----------------------------------------------------------
   void setStripesStrategy(int which)
   {
@@ -151,6 +199,7 @@ class Grid
   {
     this.resy = resy;
     this.adjustResolutionSquare();
+    
   }
 
   // ----------------------------------------------------------
@@ -170,7 +219,14 @@ class Grid
   void setRndDrawCell(float rnd_)
   {
     this.rndDrawCell = rnd_;
-    this.setRandomDrawCell(rnd_);
+//    this.setRandomDrawCell(rnd_);
+    this.bComputeGridVec = true;
+  }
+
+  // ----------------------------------------------------------
+  float getFieldValue(float x, float y)
+  {
+    return getFieldValue(new Vec2D(x, y));
   }
 
   // ----------------------------------------------------------
@@ -282,7 +338,8 @@ class Grid
     }    
 
     setRandomDrawCell(rndDrawCell);
-
+    if (this.gridField != null)  
+      this.gridField.prepare();
     computeCells();
   }
 
@@ -308,7 +365,6 @@ class Grid
   // ----------------------------------------------------------
   void computeCells()
   {
-    println("compute");
     if ( this.gridCellRender != null)
     {
 
@@ -335,7 +391,7 @@ class Grid
       // Mode Direct
       else
       {
-        this.gridCellRender.computeDirect();
+        // all is happening in the draw
       }
     }
   }
@@ -347,7 +403,7 @@ class Grid
     bDrawCell = new boolean[nbCells];
     for (int i=0; i<nbCells; i++) 
       bDrawCell[i] = ( random(1) >= r ) ? true : false;
-    computeCells();
+//    this.bComputeGridVec = true;
   }
 
   // ----------------------------------------------------------
@@ -393,35 +449,49 @@ class Grid
   }
 
   // ----------------------------------------------------------
+  void updateControls()
+  {
+    if (bUpdateControls)
+    {
+      bUpdateControls = false;
+
+      this.showGridCellRenderControls(this.gridCellRender);
+      this.showGridFieldControls(this.gridField);
+    }
+  }
+
+  // ----------------------------------------------------------
   void draw()
   {
     if (bDrawGrid)
     {
-      pushStyle();
-      stroke(colorStroke, 100);
-      strokeWeight(1);
-      noFill();
-      Vec2D A, B, C, D;
-      beginShape(QUADS);
-      for (int j=0; j<this.resy; j++)
+        pushStyle();
+        noFill();
+      if (bModeDirect == false)
       {
-        for (int i=0; i<this.resx; i++)
+        stroke(colorStroke, 100);
+        strokeWeight(1);
+        Vec2D A, B, C, D;
+        beginShape(QUADS);
+        for (int j=0; j<this.resy; j++)
         {
-          if (getCell(i, j) != null)
+          for (int i=0; i<this.resx; i++)
           {
-            A = getVec2D(i, j);
-            B = getVec2D(i+1, j);
-            C = getVec2D(i+1, j+1);
-            D = getVec2D(i, j+1);
+            if (getCell(i, j) != null)
+            {
+              A = getVec2D(i, j);
+              B = getVec2D(i+1, j);
+              C = getVec2D(i+1, j+1);
+              D = getVec2D(i, j+1);
 
-            vertex(A.x, A.y);
-            vertex(B.x, B.y);
-            vertex(C.x, C.y);
-            vertex(D.x, D.y);
+              vertex(A.x, A.y);
+              vertex(B.x, B.y);
+              vertex(C.x, C.y);
+              vertex(D.x, D.y);
+            }
           }
         }
       }
-
 
       endShape();
 
@@ -448,6 +518,8 @@ class Grid
         gridCellRender.drawStripes();
       } else
       {
+        gridCellRender.beginDrawDirect();
+
         int i, j, offset;
         for (j=0; j<this.resy; j++)
         {
@@ -457,14 +529,10 @@ class Grid
             gridCellRender.drawDirect(rects[offset], i, j);
           }
         }
+
+        gridCellRender.endDrawDirect();
       }
     }
-
-    /*    if (bComputeStripes && bModeDirect==false)
-     {
-     stripes.draw();
-     }
-     */
   }
 
   // ----------------------------------------------------------
@@ -492,5 +560,51 @@ class Grid
       }
     }
     popStyle();
+  }
+
+
+  // ----------------------------------------------------------
+  void loadConfiguration(String name)
+  {
+    JSONObject jsonGrid = loadJSONObject("data/configurations/"+name+".json");
+
+    this.setResx( jsonGrid.getInt("resx") );  
+    this.setResy( jsonGrid.getInt("resy") );  
+
+    bDarkMode = jsonGrid.getBoolean("bDarkMode");
+    setupColors();
+
+    this.bDrawGrid = jsonGrid.getBoolean("bDrawGrid");
+    this.setSquare( jsonGrid.getBoolean("bSquare") );
+    this.bDrawField = jsonGrid.getBoolean("bDrawField");
+    this.bComputeStripes = jsonGrid.getBoolean("bComputeStripes");
+    this.bDrawPolygons = jsonGrid.getBoolean("bDrawPolygons");
+
+    this.setRndDrawCell( jsonGrid.getFloat("rndDrawCell") );
+    this.setPerturbationAmount( jsonGrid.getFloat("perturbationAmount") );
+
+    this.setGridCellRenderWithName( jsonGrid.getString("gridCellRenderName") );
+    this.setGridFieldWithName( jsonGrid.getString("gridFieldName") );
+  }
+
+  // ----------------------------------------------------------
+  void saveConfiguration(String name)
+  {
+    JSONObject jsonGrid = new JSONObject();
+
+    jsonGrid.setBoolean("bDarkMode", bDarkMode);
+    jsonGrid.setInt("resx", this.resx);
+    jsonGrid.setInt("resy", this.resy);
+    jsonGrid.setBoolean("bDrawGrid", bDrawGrid);
+    jsonGrid.setBoolean("bSquare", bSquare);
+    jsonGrid.setBoolean("bDrawField", bDrawField);
+    jsonGrid.setBoolean("bComputeStripes", bComputeStripes);
+    jsonGrid.setBoolean("bDrawPolygons", bDrawPolygons);
+    jsonGrid.setFloat("perturbationAmount", this.perturbationAmount);
+    jsonGrid.setFloat("rndDrawCell", this.rndDrawCell);
+    jsonGrid.setString("gridCellRenderName", this.gridCellRender.name);
+    jsonGrid.setString("gridFieldName", this.gridField.name);
+
+    saveJSONObject(jsonGrid, "data/configurations/"+name+".json");
   }
 }

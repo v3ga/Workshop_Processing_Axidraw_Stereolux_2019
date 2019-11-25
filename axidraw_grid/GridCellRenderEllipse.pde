@@ -12,13 +12,44 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
   Slider sliderEllipseRes, sliderEllipseScalex, sliderEllipseScaley;
 
   // ----------------------------------------------------------
-  GridCellRenderEllipse(Grid grid)
+  GridCellRenderEllipse()
   {
-    super("Ellipses", grid);
-    this.grid = grid;
+    super("Ellipses");
   }
 
   // ----------------------------------------------------------
+  
+  void compute(Rect rect, Polygon2D quad)
+  {
+    // Center of rect
+    Vec2D c = new Vec2D(rect.x+0.5*rect.width, rect.y+0.5*rect.height);
+
+    // Ellipse
+    Polygon2D ellipse = new Ellipse(c, new Vec2D(this.ellipseScalex*grid.wCell/2, this.ellipseScaley*grid.hCell/2)).toPolygon2D(this.ellipseRes); 
+
+    // Fit ellipse into quad
+    Polygon2D ellipsePertubation = constrainIntoQuad(ellipse, rect, quad);
+    
+    // Add to polygons list
+    listPolygons.add(  ellipsePertubation );
+  
+    // Stripes ? 
+    if (grid.bComputeStripes)
+      computeStripes(ellipsePertubation, grid.stripesAngleStrategy, grid.getFieldValue( ellipse.getCentroid() ) );
+  }
+
+  // ----------------------------------------------------------
+  void drawDirect(Rect rect, int i, int j)
+  {
+    pushStyle();
+    noFill();
+    stroke(colorStroke);
+    ellipse(rect.x+0.5*rect.width, rect.y+0.5*rect.height, this.ellipseScalex*rect.width, this.ellipseScaley*rect.height);  
+    popStyle();
+  }
+
+
+// ----------------------------------------------------------
   void createControls()
   {
     int margin = 5;
@@ -66,35 +97,5 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
       }        
       break;
     }
-  }
-
-  // ----------------------------------------------------------
-  void compute(Rect rect, Polygon2D quad)
-  {
-    // Center of rect
-    Vec2D c = new Vec2D(rect.x+0.5*rect.width, rect.y+0.5*rect.height);
-
-    // Ellipse
-    Polygon2D ellipse = new Ellipse(c, new Vec2D(this.ellipseScalex*grid.wCell/2, this.ellipseScaley*grid.hCell/2)).toPolygon2D(this.ellipseRes); 
-
-    // Fit ellipse into quad
-    Polygon2D ellipsePertubation = constrainIntoQuad(ellipse, rect, quad);
-    
-    // Add to polygons list
-    listPolygons.add(  ellipsePertubation );
-  
-    // Stripes ? 
-    if (grid.bComputeStripes)
-      computeStripes(ellipsePertubation, grid.stripesAngleStrategy, grid.getFieldValue( ellipse.getCentroid() ) );
-  }
-
-  // ----------------------------------------------------------
-  void drawDirect(Rect rect, int i, int j)
-  {
-    pushStyle();
-    noFill();
-    stroke(colorStroke);
-    ellipse(rect.x+0.5*rect.width, rect.y+0.5*rect.height, this.ellipseScalex*rect.width, this.ellipseScaley*rect.height);  
-    popStyle();
   }
 }
