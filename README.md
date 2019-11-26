@@ -93,5 +93,6 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 
 ### Liens
 * [History of computer art part 2 : plotters](https://piratefsh.github.io/2019/01/07/computer-art-history-part-2.html)
-* [Recode Project](www.recodeproject.com)
+* [Joanie Lemercier / Alone in the desert](https://www.youtube.com/watch?v=p_wbldFTOeA)
+* [The curse of truchet tiles](https://arearugscarpet.blogspot.com/2014/04/the-curse-of-truchets-tiles.html)
 
