@@ -7,6 +7,9 @@ Au croisement du design graphique et de la programmation, ce workshop propose d�
 
 https://www.stereolux.org/agenda/workshop-processing-et-traceur-axidraw
 
+### Dossier de dépôt
+bit.ly/processing-axidraw-stereolux
+
 ## Documentation
 Cet outil permet de travailler avec une grille dont les motifs sont dessinés par programme pour chaque cellule. Deux modes de rendu sont implémentés :
 * **un rendu direct** qui permet d’utiliser les commandes classiques de dessin processing (line, ellipse, rect, ...)
