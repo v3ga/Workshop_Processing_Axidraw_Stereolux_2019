@@ -99,5 +99,6 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 * [Joanie Lemercier / Alone in the desert](https://www.youtube.com/watch?v=p_wbldFTOeA)
 * [The curse of truchet tiles](https://arearugscarpet.blogspot.com/2014/04/the-curse-of-truchets-tiles.html)
 * [Vera Molnar / Randomness](https://vimeo.com/372579247)
+* [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
 * [#plottertwitter](https://twitter.com/hashtag/Plottertwitter) sur Twitter et [#axidraw](https://www.instagram.com/explore/tags/axidraw/) sur Instagram 
 
