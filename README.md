@@ -129,6 +129,20 @@ class GridCellRenderTemplate extends GridCellRender
 }
 ```
 
+##### Récupération de la valeur
+```java
+  void drawDirect(Rect rect, int i, int j)
+  {
+    pushMatrix();
+    translate(rect.x, rect.y);
+
+    line(0, scale*rect.height, scale*rect.width, 0);
+    
+    popMatrix();
+  }
+````
+
+
 
 
 #### GridField
