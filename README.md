@@ -169,4 +169,6 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 * [Vera Molnar / Randomness](https://vimeo.com/372579247)
 * [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
 * [#plottertwitter](https://twitter.com/hashtag/Plottertwitter) sur Twitter et [#axidraw](https://www.instagram.com/explore/tags/axidraw/) sur Instagram 
+  * [Andrew @beingheumann Heumann](https://www.instagram.com/beingheumann/)
+  * Portraits de [Spongenuity](https://www.instagram.com/spongenuity/)
 * [SquiggleDraw](https://github.com/gwygonik/SquiggleDraw)
