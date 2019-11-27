@@ -164,7 +164,7 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 
 ### Liens
 * Artistes / pionniers : 
-  * [Vera Molnar / Randomness](https://vimeo.com/372579247)
+  * [Vera Molnar](https://vimeo.com/372579247)
   * [Manfred Mohr](https://www.emohr.com/)
   * [Frieder Nake](http://dada.compart-bremen.de/item/agent/68)
   * [Georg Nees](http://dada.compart-bremen.de/item/exhibition/164)
