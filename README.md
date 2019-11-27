@@ -136,6 +136,7 @@ class GridCellRenderTemplate extends GridCellRender
     pushMatrix();
     translate(rect.x, rect.y);
 
+    this.scale = this.slider.getValue(); 
     line(0, scale*rect.height, scale*rect.width, 0);
     
     popMatrix();
