@@ -163,11 +163,16 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 
 
 ### Liens
+* Artistes / pionniers : 
+  * [Vera Molnar / Randomness](https://vimeo.com/372579247)
+  * [Manfred Mohr](https://www.emohr.com/)
+  * [Frieder Nake](http://dada.compart-bremen.de/item/agent/68)
+  * [Georg Nees](http://dada.compart-bremen.de/item/exhibition/164)
+  * [Michael Noll](http://dada.compart-bremen.de/item/agent/16)
 * [History of computer art part 2 : plotters](https://piratefsh.github.io/2019/01/07/computer-art-history-part-2.html)
 * [Creative coding notes](https://github.com/cacheflowe/creative-coding-notes)
 * [Joanie Lemercier / Alone in the desert](https://www.youtube.com/watch?v=p_wbldFTOeA)
 * [The curse of truchet tiles](https://arearugscarpet.blogspot.com/2014/04/the-curse-of-truchets-tiles.html)
-* [Vera Molnar / Randomness](https://vimeo.com/372579247)
 * [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
 * [#plottertwitter](https://twitter.com/hashtag/Plottertwitter) sur Twitter et [#axidraw](https://www.instagram.com/explore/tags/axidraw/) sur Instagram 
   * [Andrew @beingheumann Heumann](https://www.instagram.com/beingheumann/)
