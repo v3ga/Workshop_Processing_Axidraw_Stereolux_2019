@@ -77,6 +77,59 @@ void compute(Rect rect, Polygon2D quad)
 }
 ```
 
+#### Ajouter un contrôle
+Nous allons voir comment relier la valeur d'une variable à un slider.
+
+##### Déclaration d'une variable et du slider 
+Nous allons créer une variable *scale* qui sera un paramètre de mise à l'échelle d'une forme géométrique. Nous allons créer aussi la variable qui va représenter notre slider.
+
+```java
+class GridCellRenderTemplate extends GridCellRender 
+{
+  float scale = 1.0; // déclaration de la variable et assignation de la valeur 1.0
+  Slider sliderScale; // déclaration du slider
+
+  GridCellRenderTemplate()
+  {
+    super("Template");
+  }
+}
+```
+
+##### Création du contrôle
+Dans la méthode *createControls()*, nous allons créer le contrôle qui utilise des variables prédéfinis pour sa taille et sa position à l'écran. La création des controles doit être encadrée par les appels à *beginCreateControls()* et *endCreateControls()*
+
+```java
+class GridCellRenderTemplate extends GridCellRender 
+{
+  float scale = 1.0; // déclaration de la variable et assignation de la valeur 1.0
+  Slider sliderScale; // déclaration du slider
+
+  GridCellRenderTemplate()
+  {
+    super("Template");
+  }
+  
+  void createControls()
+  {
+    beginCreateControls();
+    
+        sliderScale = 
+        controls.cp5.addSlider( _id("scale") )
+        .setLabel("scale") // label du controle
+        .setPosition(x, y) // position 
+        .setSize(wControl, hControl) // taille du controle 
+        .setRange(0.2, 2.0) // valeur minimum et valeur maximum (range) 
+        .setValue(this.scale)
+        .setGroup(g);
+    
+    
+    endCreateControls();
+  }
+}
+```
+
+
 
 #### GridField
 Cette classe permet de fournir une valeur comprise entre 0 et 1 pour être utilisée pour moduler des variables de rendu de grille (espacement et angle de rotation de hachures, mise à l’échelle de motif, etc...)
