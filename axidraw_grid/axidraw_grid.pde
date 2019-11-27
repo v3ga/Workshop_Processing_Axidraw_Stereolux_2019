@@ -27,7 +27,7 @@ import toxi.geom.*;
 import toxi.math.*;
 
 // ------------------------------------------------------
-boolean bModeDirect = true;
+boolean bModeDirect = false;
 
 // ------------------------------------------------------
 // Colors
@@ -40,8 +40,8 @@ color colorBackground = COLOR_BLACK;
 color colorStroke = COLOR_WHITE;
 
 // Window dimensions
-int windowWidth = 1200;
-int windowHeight = 800;
+int windowWidth = 800;
+int windowHeight = 600;
 
 // Resolution max for grid (both x & y)
 int nbGridResMax = 30;

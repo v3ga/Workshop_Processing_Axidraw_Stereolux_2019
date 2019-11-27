@@ -5,10 +5,10 @@
   "rndDrawCell": 0,
   "bComputeStripes": false,
   "bDrawPolygons": true,
-  "gridFieldName": "vertical gradient",
-  "resy": 5,
+  "gridFieldName": "Sine",
+  "resy": 23,
   "bSquare": false,
-  "resx": 5,
+  "resx": 26,
   "bDrawField": false,
   "gridCellRenderName": "Template"
 }

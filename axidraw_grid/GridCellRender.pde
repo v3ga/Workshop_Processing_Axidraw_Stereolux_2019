@@ -6,6 +6,12 @@ class GridCellRender
   ArrayList<Polygon2D> listPolygons;
   Stripes stripes;
   Group g;
+  int marginControl = 5;
+  int wControl = int(rectColumnRight.width - 2*marginControl)-60;
+  int hControl = 20;
+  int paddingControl = 10;
+  int xControl = 5;
+  int yControl = 10;
 
   // ----------------------------------------------------------
   GridCellRender(String name)
@@ -46,19 +52,22 @@ class GridCellRender
   }
 
   // ----------------------------------------------------------
-  void createControls()
+  void beginCreateControls()
   {
-    int margin = 5;
-    int wControl = int(rectColumnRight.width - 2*margin)-60;
-    int hControl = 20;
-    int padding = 10;
-    int x = 5;
-    int y = 10;
-
     ControlP5 cp5 = controls.cp5;
     g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, 10);
+  }
 
+  // ----------------------------------------------------------
+  void endCreateControls()
+  {
+    ControlP5 cp5 = controls.cp5;
     cp5.setBroadcast(true);
+  }
+
+  // ----------------------------------------------------------
+  void createControls()
+  {
   }
 
   // ----------------------------------------------------------
