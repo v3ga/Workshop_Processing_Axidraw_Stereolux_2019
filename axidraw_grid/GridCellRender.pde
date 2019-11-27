@@ -21,6 +21,11 @@ class GridCellRender
   }
 
   // ----------------------------------------------------------
+  void init()
+  {
+  }
+
+  // ----------------------------------------------------------
   void beginCompute()
   {
     listPolygons = new ArrayList<Polygon2D>();
@@ -55,7 +60,7 @@ class GridCellRender
   void beginCreateControls()
   {
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, 10);
+    g = cp5.addGroup(this.name).setBackgroundHeight(200).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridCellRenderControls);
   }
 
   // ----------------------------------------------------------

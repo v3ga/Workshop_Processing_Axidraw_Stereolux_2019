@@ -1,14 +1,14 @@
 {
   "perturbationAmount": 0,
-  "bDrawGrid": true,
+  "bDrawGrid": false,
   "bDarkMode": true,
   "rndDrawCell": 0,
   "bComputeStripes": false,
   "bDrawPolygons": true,
-  "gridFieldName": "Sine",
+  "gridFieldName": "Random",
   "resy": 23,
   "bSquare": false,
   "resx": 26,
   "bDrawField": false,
-  "gridCellRenderName": "Template"
+  "gridCellRenderName": "Spaghetti"
 }

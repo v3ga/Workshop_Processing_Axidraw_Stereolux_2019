@@ -8,7 +8,10 @@
  —
  
  Julien @v3ga Gachadoat
- with contributions by Laurent @__vac__ Novac
+ 
+ with contributions by : 
+ + Laurent @__vac__ Novac
+ + Antoine @aguillien Guillien
  
  —
  
@@ -27,11 +30,13 @@ import toxi.geom.*;
 import toxi.math.*;
 
 // ------------------------------------------------------
-boolean bModeDirect = false;
+boolean bModeDirect = true;
 
 // ------------------------------------------------------
-// Colors
 boolean bDarkMode = true;
+
+// ------------------------------------------------------
+boolean bDrawDebug = false;
 
 // Colors constants + variables
 color COLOR_BLACK = color(0);
@@ -40,8 +45,8 @@ color colorBackground = COLOR_BLACK;
 color colorStroke = COLOR_WHITE;
 
 // Window dimensions
-int windowWidth = 800;
-int windowHeight = 600;
+int windowWidth = 1280;
+int windowHeight = 720;
 
 // Resolution max for grid (both x & y)
 int nbGridResMax = 30;
@@ -50,8 +55,10 @@ int gridMargin = 40;
 // Export folder (relative to sketch)
 String strExportFolder = "data/exports/svg/";
 
-// ------------------------------------------------------
-boolean bDrawDebug = false;
+// Controls
+float yGridFieldControls = 200; 
+int hGridFieldControls = 200;
+float yGridCellRenderControls = 0;
 
 // ------------------------------------------------------
 Grid grid;
@@ -85,9 +92,25 @@ void setupGrid()
   grid.addGridCellRenderPolygon( new GridCellRenderQuad()  );
 
   // Direct mode 
-  grid.addGridCellRenderDirect( new GridCellRenderTemplate() );
+  grid.addGridCellRenderDirect( new GridCellRenderArnaud() );
+  grid.addGridCellRenderDirect( new GridCellRenderTruchetCaroA() );
+  grid.addGridCellRenderDirect( new GridCellRenderTruchetCaroD() );
+  grid.addGridCellRenderDirect( new GridCellRenderStereolux1() );
+  grid.addGridCellRenderDirect( new GridCellRenderThomas() );
+  grid.addGridCellRenderDirect( new GridCellRenderNoiseGlyphs() );
+  grid.addGridCellRenderDirect( new GridCellRenderSecond() );
+  grid.addGridCellRenderDirect( new GridCellRenderSpiro() );
+  grid.addGridCellRenderDirect( new GridCellRenderToinou() );
+  grid.addGridCellRenderDirect( new GridCellRenderCedric() );
+  
+
+  
+  
+
   grid.addGridCellRenderDirect( new GridCellRenderTruchet() );
   grid.addGridCellRenderDirect( new GridCellRenderSpaghetti() );
+//  grid.addGridCellRenderDirect( new GridCellRenderTemplate() );
+  
   //grid.addGridCellRenderDirect( new GridCellRenderSpaghettiOrtho() );
   //grid.addGridCellRenderDirect( new GridCellRenderVera() );
 
@@ -125,12 +148,23 @@ void setupColors()
 // ------------------------------------------------------
 void setupLayout()
 {
+
   float r = 0.25;
   float wRectColumn = r*windowWidth;
   rectColumnLeft = new Rect(0, 0, wRectColumn, windowHeight);
   rectColumnRight = new Rect(width-wRectColumn, 0, wRectColumn, windowHeight);
   float wRectGrid = width - (rectColumnLeft.width+rectColumnRight.width);
   rectGrid = new Rect(wRectColumn, 0, wRectGrid, windowHeight);
+/*
+  float wRectColumn = 0.3*windowWidth;
+  rectColumnLeft = new Rect(0, 0, wRectColumn, windowHeight);
+  
+  float wRectColumnRight = 0.2*windowWidth;
+  rectColumnRight = new Rect(width-wRectColumnRight, 0, wRectColumnRight, windowHeight);
+
+  float wRectGrid = 0.5*windowWidth;
+  rectGrid = new Rect(wRectColumn, 0, wRectGrid, windowHeight);
+*/
 }
 
 // ------------------------------------------------------
@@ -208,8 +242,13 @@ void keyPressed()
   if (key == 'c')
   {
     controls.close();
-  } else if (key == 'o')
+  }
+  else if (key == 'o')
   {
     controls.open();
+  }
+  else if (key == 'e')
+  {
+    exportSVG();
   }
 }

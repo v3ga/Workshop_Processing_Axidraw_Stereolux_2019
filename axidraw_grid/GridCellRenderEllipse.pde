@@ -60,7 +60,7 @@ class GridCellRenderEllipse extends GridCellRender implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, 10);
+    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridCellRenderControls);
 
     cp5.setBroadcast(false);
     sliderEllipseRes = cp5.addSlider( _id("res") ).setLabel("res").setPosition(x, y).setSize(wControl, hControl).setRange(3, 30).setNumberOfTickMarks(30-2).setValue(this.ellipseRes).setGroup(g).addCallback(this);

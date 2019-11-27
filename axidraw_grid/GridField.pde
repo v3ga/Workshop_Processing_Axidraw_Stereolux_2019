@@ -81,7 +81,7 @@ class GridFieldConstant extends GridField implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
+    g = cp5.addGroup(this.name).setBackgroundHeight(hGridFieldControls).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridFieldControls);
 
     cp5.setBroadcast(false);
     sliderValue = cp5.addSlider( _id("value") ).setLabel("value").setPosition(x, y).setSize(wControl, hControl).setRange(0, 1).setValue(this.value).setGroup(g).addCallback(this);
@@ -139,7 +139,7 @@ class GridFieldRandom extends GridField implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
+    g = cp5.addGroup(this.name).setBackgroundHeight(hGridFieldControls).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridFieldControls);
 
     cp5.setBroadcast(false);
     cp5.addButton(_id("generate")).setLabel("generate").setPosition(x, y).setGroup(g).addCallback(this);
@@ -218,7 +218,7 @@ class GridFieldSine extends GridField implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
+    g = cp5.addGroup(this.name).setBackgroundHeight(hGridFieldControls).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridFieldControls);
 
     cp5.setBroadcast(false);
     sliderNbPeriod = cp5.addSlider( _id("nbPeriod") ).setLabel("period").setPosition(x, y).setSize(wControl, hControl).setRange(0.5, 4).setValue(this.nbPeriod).setGroup(g).addCallback(this);
@@ -290,7 +290,7 @@ class GridFieldNoise extends GridField implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
+    g = cp5.addGroup(this.name).setBackgroundHeight(hGridFieldControls).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridFieldControls);
 
     cp5.setBroadcast(false);
     sliderNoiseScale = cp5.addSlider( _id("noiseScale") ).setLabel("noiseScale").setPosition(x, y).setSize(wControl, hControl).setRange(0.000001, 0.01).setValue(this.noiseScale).setGroup(g).addCallback(this);
@@ -345,7 +345,7 @@ class GridFieldGradientVertical extends GridField implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
+    g = cp5.addGroup(this.name).setBackgroundHeight(hGridFieldControls).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridFieldControls);
     tgReverse = cp5.addToggle(_id("reverse")).setLabel("reverse").setPosition(x, y).setSize(hControl, hControl).setValue(bReverse).setGroup(g).addCallback(this);
     y+=(hControl+padding+8);
 

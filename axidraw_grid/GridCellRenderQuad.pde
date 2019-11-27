@@ -43,7 +43,7 @@ class GridCellRenderQuad extends GridCellRender implements CallbackListener
     int y = 10;
 
     ControlP5 cp5 = controls.cp5;
-    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, 10);
+    g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, yGridCellRenderControls);
 
     sliderScalex = cp5.addSlider( _id("scalex") ).setLabel("scalex").setPosition(x, y).setSize(wControl, hControl).setRange(0.2, 2).setValue(this.scalex).setGroup(g).addCallback(this);
     y+=(hControl+padding);

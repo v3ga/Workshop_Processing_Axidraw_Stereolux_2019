@@ -64,7 +64,8 @@ class Controls
   public void setup() 
   {
     int margin = 5;
-    int wControl = int(rectColumnLeft.width - 2*margin)-60;
+//    int wControl = int(rectColumnLeft.width - 2*margin)-60;
+    int wControl = int(rectColumnRight.width - 2*margin)-60;
     int hControl = 20;
     int padding = 10;
     int x = 5;
@@ -122,9 +123,10 @@ class Controls
       customizeDropdown(dlStripesAngleStrategy, hControl);
     }
 
-    btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(x, height - hControl - margin);
-    btnGenerate = cp5.addButton("generate").setLabel("generate").setPosition(x + padding + btnExportSVG.getWidth(), height - hControl - margin);
-    btnSaveConfiguration = cp5.addButton("saveConfiguration").setLabel("save").setPosition(x + 2*padding + btnExportSVG.getWidth() + btnGenerate.getWidth(), height - hControl - margin);
+    float xButton = padding;
+    btnExportSVG = cp5.addButton("exportSVG").setLabel("export svg").setPosition(xButton, height - hControl - margin);
+    btnGenerate = cp5.addButton("generate").setLabel("generate").setPosition(xButton + padding + btnExportSVG.getWidth(), height - hControl - margin);
+    btnSaveConfiguration = cp5.addButton("saveConfiguration").setLabel("save").setPosition(xButton + 2*padding + btnExportSVG.getWidth() + btnGenerate.getWidth(), height - hControl - margin);
 
 
 
