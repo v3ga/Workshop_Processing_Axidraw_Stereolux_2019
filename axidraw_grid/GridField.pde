@@ -270,7 +270,8 @@ class GridFieldSine extends GridField implements CallbackListener
 class GridFieldNoise extends GridField implements CallbackListener
 {
   float nbPeriod = 1;
-  Slider sliderNbPeriod;
+  float noiseScale = 0.01;
+  Slider sliderNoiseScale;
 
   // ----------------------------------------------------------
   GridFieldNoise()
@@ -292,6 +293,8 @@ class GridFieldNoise extends GridField implements CallbackListener
     g = cp5.addGroup(this.name).setBackgroundHeight(400).setWidth(int(rectColumnRight.width)).setBackgroundColor(color(0, 190)).setPosition(rectColumnRight.x, height-400);
 
     cp5.setBroadcast(false);
+    sliderNoiseScale = cp5.addSlider( _id("noiseScale") ).setLabel("noiseScale").setPosition(x, y).setSize(wControl, hControl).setRange(0.000001, 0.01).setValue(this.noiseScale).setGroup(g).addCallback(this);
+    y+=(hControl+padding);
 
     cp5.setBroadcast(true);
   }
@@ -302,18 +305,21 @@ class GridFieldNoise extends GridField implements CallbackListener
     switch(theEvent.getAction()) 
     {
     case ControlP5.ACTION_RELEASED: 
-    case ControlP5.ACTION_RELEASEDOUTSIDE: 
+    case ControlP5.ACTION_RELEASEDOUTSIDE:
+      String name = theEvent.getController().getName();
+      float val = theEvent.getController().getValue();
+      if (name.equals( _id("noiseScale") ) )
+      {
+        this.noiseScale = val;
+      }
       break;
     }
   }
 
-
   // ----------------------------------------------------------
   float getValue(float x, float y)
   {
-    float cx = this.grid.x + 0.5*this.grid.w;
-    float cy = this.grid.y + 0.5*this.grid.h;
-    return noise( 0.01*x, 0.01*y);
+    return noise(this.noiseScale*x, this.noiseScale*y);
   }
 }
 
