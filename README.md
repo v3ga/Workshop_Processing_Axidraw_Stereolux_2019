@@ -170,15 +170,19 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
   * [Frieder Nake](http://dada.compart-bremen.de/item/agent/68)
   * [Georg Nees](http://dada.compart-bremen.de/item/exhibition/164)
   * [Michael Noll](http://dada.compart-bremen.de/item/agent/16)
-* [History of computer art part 2 : plotters](https://piratefsh.github.io/2019/01/07/computer-art-history-part-2.html)
-* [Creative coding notes](https://github.com/cacheflowe/creative-coding-notes)
-* [Joanie Lemercier / Alone in the desert](https://www.youtube.com/watch?v=p_wbldFTOeA)
-* [The curse of truchet tiles](https://arearugscarpet.blogspot.com/2014/04/the-curse-of-truchets-tiles.html)
-* [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
-* [#plottertwitter](https://twitter.com/hashtag/Plottertwitter) sur Twitter et [#axidraw](https://www.instagram.com/explore/tags/axidraw/) sur Instagram 
+* Histoire plotter / computer : 
+  * [History of computer art part 2 : plotters](https://piratefsh.github.io/2019/01/07/computer-art-history-part-2.html)
+* Ressources outils / algorithmes : 
+  * [Creative coding notes](https://github.com/cacheflowe/creative-coding-notes)
+  * [morphogenesis-resources](https://github.com/jasonwebb/morphogenesis-resources)
+* Exemple d'utilisations Axidraw : 
+  * [Joanie Lemercier / Alone in the desert](https://www.youtube.com/watch?v=p_wbldFTOeA)
+  * [#plottertwitter](https://twitter.com/hashtag/Plottertwitter) sur Twitter et [#axidraw](https://www.instagram.com/explore/tags/axidraw/) sur Instagram 
   * [Andrew @beingheumann Heumann](https://www.instagram.com/beingheumann/)
   * Portraits de [Samer @spongenuity Dabra](https://www.instagram.com/spongenuity/)
-* [SquiggleDraw](https://github.com/gwygonik/SquiggleDraw)
+  * [SquiggleDraw](https://github.com/gwygonik/SquiggleDraw)
+* [The curse of truchet tiles](https://arearugscarpet.blogspot.com/2014/04/the-curse-of-truchets-tiles.html)
+* [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
 
 ### Photos
 ![Axidraw](images/191127_Stereolux_two_axidraws_priting.JPG)
