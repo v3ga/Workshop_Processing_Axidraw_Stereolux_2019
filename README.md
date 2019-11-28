@@ -175,3 +175,9 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
   * [Andrew @beingheumann Heumann](https://www.instagram.com/beingheumann/)
   * Portraits de [Samer @spongenuity Dabra](https://www.instagram.com/spongenuity/)
 * [SquiggleDraw](https://github.com/gwygonik/SquiggleDraw)
+
+### Photos
+![Axidraw](191127_Stereolux_two_axidraws_priting.JPG)
+![Axidraw](images/191127_Stereolux_axidraw_restitution_01.JPG)
+![Axidraw](images/191127_Stereolux_axidraw_restitution_02.JPG)
+
