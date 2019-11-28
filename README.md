@@ -178,9 +178,9 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 * Exemple d'utilisations Axidraw : 
   * [Joanie Lemercier / Alone in the desert](https://www.youtube.com/watch?v=p_wbldFTOeA)
   * [#plottertwitter](https://twitter.com/hashtag/Plottertwitter) sur Twitter et [#axidraw](https://www.instagram.com/explore/tags/axidraw/) sur Instagram 
-  * [Andrew @beingheumann Heumann](https://www.instagram.com/beingheumann/)
-  * Portraits de [Samer @spongenuity Dabra](https://www.instagram.com/spongenuity/)
-  * [SquiggleDraw](https://github.com/gwygonik/SquiggleDraw)
+    * [Andrew @beingheumann Heumann](https://www.instagram.com/beingheumann/)
+    * Portraits de [Samer @spongenuity Dabra](https://www.instagram.com/spongenuity/)
+    * [SquiggleDraw](https://github.com/gwygonik/SquiggleDraw)
 * [The curse of truchet tiles](https://arearugscarpet.blogspot.com/2014/04/the-curse-of-truchets-tiles.html)
 * [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
 
