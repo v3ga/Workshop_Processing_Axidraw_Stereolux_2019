@@ -251,4 +251,8 @@ void keyPressed()
   {
     exportSVG();
   }
+  else if (key == 's')
+  {
+    saveFrame("data/exports/images/interface.png");
+  }
 }

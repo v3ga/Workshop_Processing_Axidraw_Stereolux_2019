@@ -6,9 +6,9 @@
   "bComputeStripes": false,
   "bDrawPolygons": true,
   "gridFieldName": "Random",
-  "resy": 23,
+  "resy": 9,
   "bSquare": false,
-  "resx": 26,
+  "resx": 9,
   "bDrawField": false,
-  "gridCellRenderName": "Spaghetti"
+  "gridCellRenderName": "Cedric"
 }
