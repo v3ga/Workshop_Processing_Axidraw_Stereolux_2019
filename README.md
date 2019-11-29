@@ -10,6 +10,9 @@ https://www.stereolux.org/agenda/workshop-processing-et-traceur-axidraw
 
 ## Outil
 ![Gifi](https://media.giphy.com/media/VdtYtKGy5YRPPlZMpi/giphy.gif)
+![Gifi](https://media.giphy.com/media/UQnDWbwRtiT2rTjWlK/giphy.gif)
+
+
 
 ## Documentation
 Cet outil permet de travailler avec une grille dont les motifs sont dessinés par programme pour chaque cellule. Deux modes de rendu sont implémentés :
@@ -185,7 +188,9 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 * [Machines à dessiner sur Canopé](https://www.reseau-canope.fr/machines-a-dessiner)
 
 ### Photos
-![Axidraw](images/191127_Stereolux_two_axidraws_priting.JPG)
+![Axidraw](images/191127_Stereolux_two_axidraws_printing_01.JPG)
+![Axidraw](images/191127_Stereolux_two_axidraws_printing_02.JPG)
 ![Axidraw](images/191127_Stereolux_axidraw_restitution_01.JPG)
 ![Axidraw](images/191127_Stereolux_axidraw_restitution_02.JPG)
-
+<img src="images/191127_Stereolux_axidraw_restitution_03a.JPG" width="400">
+<img src="images/191127_Stereolux_axidraw_restitution_03b.JPG" width="400">
