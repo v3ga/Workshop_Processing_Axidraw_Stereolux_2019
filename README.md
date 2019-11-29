@@ -192,5 +192,5 @@ Elle maintient une liste d'instances de *GridCellRender* et de *GridField*.
 ![Axidraw](images/191127_Stereolux_two_axidraws_printing_02.JPG)
 ![Axidraw](images/191127_Stereolux_axidraw_restitution_01.JPG)
 ![Axidraw](images/191127_Stereolux_axidraw_restitution_02.JPG)
-<img src="images/191127_Stereolux_axidraw_restitution_03b.JPG" width="433">
-<img src="images/191127_Stereolux_axidraw_restitution_03a.JPG" width="433">
+<img src="images/191127_Stereolux_axidraw_restitution_03b.JPG" width="420">
+<img src="images/191127_Stereolux_axidraw_restitution_03a.JPG" width="420">
