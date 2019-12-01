@@ -117,6 +117,7 @@ class Grid
       this.gridCellRender = listRenders.get(index);
 
       this.bComputeGridVec = true;
+      this.bUpdateControls = true;
     }
   }
 
@@ -142,7 +143,7 @@ class Grid
     if (index < this.listFields.size())
     {
       this.gridField = listFields.get(index);
-//      this.gridField.prepare();
+      //      this.gridField.prepare();
 
       this.bComputeGridVec = true;
       this.bUpdateControls = true;
@@ -199,7 +200,6 @@ class Grid
   {
     this.resy = resy;
     this.adjustResolutionSquare();
-    
   }
 
   // ----------------------------------------------------------
@@ -219,7 +219,7 @@ class Grid
   void setRndDrawCell(float rnd_)
   {
     this.rndDrawCell = rnd_;
-//    this.setRandomDrawCell(rnd_);
+    //    this.setRandomDrawCell(rnd_);
     this.bComputeGridVec = true;
   }
 
@@ -403,7 +403,7 @@ class Grid
     bDrawCell = new boolean[nbCells];
     for (int i=0; i<nbCells; i++) 
       bDrawCell[i] = ( random(1) >= r ) ? true : false;
-//    this.bComputeGridVec = true;
+    //    this.bComputeGridVec = true;
   }
 
   // ----------------------------------------------------------
@@ -465,8 +465,8 @@ class Grid
   {
     if (bDrawGrid)
     {
-        pushStyle();
-        noFill();
+      pushStyle();
+      noFill();
       if (bModeDirect == false)
       {
         stroke(colorStroke, 100);
